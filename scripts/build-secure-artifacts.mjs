@@ -104,7 +104,8 @@ const dashboardComponents = [
   'user-profile-widget.js',
   'dashboard-radar.js',
   'extractor-universal.js',
-  'dashboard-overview.js'
+  'dashboard-overview.js',
+  'applyra-shell.js'
 ];
 let dashboardContent = `/* Applyra Unified Production Runtime - Proprietary & Confidential */\n`;
 for (const comp of dashboardComponents) {

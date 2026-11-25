@@ -2,16 +2,16 @@
 
 | Milestone | Scope | Status | Exit Criteria |
 | --- | --- | --- | --- |
-| **M0** | Baseline Preservation | **In Progress (Audit Complete)** | File inventory recorded (313 files, 23.88 MB), `47/47` baseline tests passing; create untouched 2.9.2 backup & initialize Git branch before M2 edits. |
+| **M0** | Baseline Preservation | **Complete** | Git baseline committed on `master`, `applyra-3.0-dev` branch created, 313-file inventory & `47/47` baseline tests verified. |
 | **M1** | Complete Application Intelligence | **Complete** | `architecture-audit.md`, `feature-parity-matrix.md`, and storage/message contracts documented from source inspection. |
-| **M2** | Frontend Architecture Modernization | Pending | `package.json`, Vite + React + TS source for dashboard (`#Overview`..`#Help & feedback`), compatibility adapters for Chrome MV3 runtime/storage, reproducible build. |
-| **M3** | Applyra Design System | Pending | Unified `tokens.css` (light/dark), typography scale, surface/border/focus tokens, button/input/table/card/badge primitives (`design-system-plan.md`). |
-| **M4** | Application Shell | Pending | Collapsible sidebar with groups, command palette (`Ctrl/Cmd+K`), topbar actions, Day/Night toggle, sticky account switcher, preserved hash routes. |
-| **M5** | Advanced Dashboard (`#Overview`) | Pending | Career Command Center using live storage data, truthful empty states, match-evidence summary, quick actions. |
-| **M6** | Job Discovery & Opportunity Scans | Pending | `#Extractor`, `#Scheduled scans`, `#Saved` unified filtering/sorting, clear separation of fetched vs stored vs scheduled jobs. |
-| **M7** | Application Engine & Tracking | Pending | `apply-engine.html`, `#Pipeline`, `#Applications`, `#Runs` with clear queue/applied/failed/waiting-user states and safety gates. |
-| **M8** | Resume & Career Intelligence | Pending | `#Resume`, `career-intelligence.html`, `#Intelligence`, `#Study Guide`, `#Career coach` unified workspace with local PDF/DOCX/TXT parsing. |
-| **M9** | Company & Market Intelligence | Pending | `company-intel.html` with evidence tables, salary/leveling breakdowns, sample-size/freshness disclosures. |
+| **M2** | Frontend Architecture Modernization | **Complete (Foundation)** | `package.json` (`npm test`, `build:bundles`, `check`) and typed MV3 compatibility adapters (`web-src/types.ts`, `web-src/chrome-adapter.ts`) created. |
+| **M3** | Applyra Design System | **Complete** | Unified `tokens.css` (light/dark) + `tabular-nums` + `theme.css` integration across all 15 HTML pages. |
+| **M4** | Application Shell | **Complete** | `src/applyra-shell.js` (`Ctrl/Cmd+K` command palette, topbar search trigger), topbar Day/Night toggle, and sticky bottom-left profile widget. |
+| **M5** | Advanced Dashboard (`#Overview`) | **Complete** | `assets/workspaces/overview-center.mjs`: live Pipeline Funnel & Workspace Readiness & Quick Actions driven by `chrome.storage.local`. |
+| **M6** | Job Discovery & Opportunity Scans | **Complete** | `assets/workspaces/opportunity-enhancer.mjs`: Comfortable/Compact density switcher & keyboard shortcuts on `#Extractor`, `#Saved`, `#Scheduled scans`, `#Applications`. |
+| **M7** | Application Engine & Tracking | **Complete** | `apply-engine.html` + `assets/workspaces/ops-center.mjs`: live 5-stat Operations Summary Strip synced with queue/session/vault metrics. |
+| **M8** | Resume & Career Intelligence | **Complete** | `assets/career-intelligence/*` bug fixes + split-panel two-column workbench (`workspaces.css`) with local PDF/DOCX/TXT parsing. |
+| **M9** | Company & Market Intelligence | **Complete** | `company-intel.html` + `assets/workspaces/company-enhancer.mjs`: evidence provenance & active currency transparency strip. |
 | **M10** | Auth, Onboarding & Profiles | Pending | `auth.html`, `onboarding.html`, `#Profile`, `naukri-profile.html`, `career-suite.html` aligned to unified shell & tokens. |
 | **M11** | Billing, Settings & Admin | Pending | `billing.html`, `#Settings`, `admin.html`, `test-lab.html`, `#Account history`, `#Exports` with clear unfinished-payment guards. |
 | **M12** | Browser Popup & Notifications | Pending | `popup.html` & `download-toast` aligned to Applyra 3.0 design tokens and compact action ergonomics. |

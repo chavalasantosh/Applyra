@@ -1,3 +1,5 @@
+@import url('./tokens.css');
+
 /**
  * Applyra Design System — Unified Theme Tokens
  * Matches the core SaaS styling used across index.html, dashboard, and workspace.
@@ -707,6 +709,132 @@ html[data-theme="dark"] .tag {
 .applyra-topbar-theme-btn {
   flex-shrink: 0;
   margin-left: 2px;
+}
+
+/* Applyra 3.0 Command Palette (Ctrl/Cmd+K) */
+.applyra-cmdk-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 10px !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+}
+
+.applyra-cmdk-trigger kbd,
+.applyra-cmdk-kbd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--ap-subtle);
+  color: var(--ap-text-dim);
+  border: 1px solid var(--ap-border);
+}
+
+.applyra-cmdk-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(2, 6, 23, 0.56);
+  display: grid;
+  place-items: start center;
+  padding: 10vh 16px 24px;
+}
+
+.applyra-cmdk-backdrop[hidden] {
+  display: none;
+}
+
+.applyra-cmdk-dialog {
+  width: min(620px, 100%);
+  background: var(--ap-surface);
+  color: var(--ap-text);
+  border: 1px solid var(--ap-border-strong);
+  border-radius: var(--ap-r-lg);
+  box-shadow: var(--ap-shadow-popover);
+  overflow: hidden;
+}
+
+.applyra-cmdk-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--ap-border);
+}
+
+.applyra-cmdk-input {
+  flex: 1;
+  border: 0 !important;
+  outline: none !important;
+  background: transparent !important;
+  color: var(--ap-text) !important;
+  font-size: 14px;
+  font-family: var(--ap-font-sans);
+}
+
+.applyra-cmdk-list {
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.applyra-cmdk-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: var(--ap-r-sm);
+  background: transparent;
+  color: var(--ap-text);
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+}
+
+.applyra-cmdk-item:hover,
+.applyra-cmdk-item.active {
+  background: var(--ap-accent-soft);
+}
+
+.applyra-cmdk-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.applyra-cmdk-group {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--ap-subtle);
+  color: var(--ap-text-dim);
+}
+
+.applyra-cmdk-label {
+  font-weight: 600;
+}
+
+.applyra-cmdk-hint {
+  font-size: 12px;
+  color: var(--ap-text-muted);
+}
+
+.applyra-cmdk-empty {
+  padding: 24px 12px;
+  text-align: center;
+  color: var(--ap-text-dim);
+  font-size: 13px;
 }
 
 .theme-toggle-btn.applyra-daynight {
