@@ -7,19 +7,28 @@
     "test": "node --test tests/*.test.*",
     "build:bundles": "node scripts/build-secure-artifacts.mjs",
     "build:web": "vite build",
+    "build:lab": "vite build --config vite.lab.config.mjs",
     "typecheck": "tsc --noEmit",
     "package:ext": "node scripts/package-extension.mjs",
     "check": "tsc --noEmit && node --check assets/dashboard-runtime.js && node --check assets/career-intelligence/ui.mjs && node --check assets/career-intelligence/core.js && node --check assets/career-intelligence/resume-parser.mjs && node --check assets/workspaces/shell.mjs && node --check assets/workspaces/overview-center.mjs && node --check assets/workspaces/opportunity-enhancer.mjs && node --check assets/workspaces/ops-center.mjs && node --check assets/workspaces/vault-suggestions.mjs && node --check assets/workspaces/company-enhancer.mjs && node --check assets/workspaces/workspaces-boot.mjs && node --check theme-controls.js && node --check content.js"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "1.1.15",
+    "@radix-ui/react-tabs": "1.1.13",
+    "@xyflow/react": "12.8.4",
+    "clsx": "2.1.1",
+    "echarts": "5.6.0",
+    "gsap": "3.13.0",
     "lucide-react": "0.544.0",
     "motion": "12.23.12",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "three": "0.179.1"
   },
   "devDependencies": {
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
+    "@types/three": "^0.179.0",
     "@vitejs/plugin-react": "^5.0.2",
     "typescript": "^5.9.2",
     "vite": "^7.1.5"
