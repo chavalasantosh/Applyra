@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Applyra Admin Console</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="user-profile-widget.css" />
+  <link rel="stylesheet" href="download-toast.css" />
+  <link rel="stylesheet" href="theme.css" />
+  </head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="mainSidebar">
+      <!-- ChatGPT-style Top Bar with Brand, Search & Collapse -->
+      <div class="sidebar-header-bar">
+        <div class="sidebar-header-left">
+          <img src="assets/brand/icon48.png" alt="Applyra" />
+          <strong>Applyra</strong>
+        </div>
+        <div class="sidebar-header-actions">
+          <button type="button" class="sidebar-icon-btn" id="sidebarToggleBtn" title="Toggle sidebar width">
+            ◫
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-nav-search-wrap">
+        <input type="search" class="sidebar-nav-search-input" id="sidebarNavSearch" placeholder="Search sections..." />
+      </div>
+
+      <div id="environmentBadge" class="env-badge">LOCAL EXTENSION</div>
+      <nav id="adminNav" aria-label="Admin sections">
+        <button class="nav-item active" data-section="overview"><span class="item-icon">📊</span> Overview</button>
+        <div class="nav-label">Access</div>
+        <button class="nav-item" data-section="users"><span class="item-icon">👥</span> Users</button>
+        <button class="nav-item" data-section="authentication"><span class="item-icon">🔐</span> Authentication</button>
+        <button class="nav-item" data-section="providers"><span class="item-icon">🌐</span> Providers</button>
+        <button class="nav-item" data-section="features"><span class="item-icon">🎛️</span> Feature controls</button>
+        <div class="nav-label">Operations</div>
+        <button class="nav-item" data-section="automation"><span class="item-icon">⚡</span> Automation</button>
+        <button class="nav-item" data-section="applications"><span class="item-icon">📁</span> Applications</button>
+        <button class="nav-item" data-section="portal-health"><span class="item-icon">🩺</span> Portal health</button>
+        <button class="nav-item" data-section="health"><span class="item-icon">💚</span> System health</button>
+        <button class="nav-item" data-section="errors"><span class="item-icon">⚠️</span> Errors</button>
+        <button class="nav-item" data-section="audit"><span class="item-icon">📜</span> Audit log</button>
+        <div class="nav-label">Governance</div>
+        <button class="nav-item" data-section="security"><span class="item-icon">🛡️</span> Security</button>
+        <button class="nav-item" data-section="privacy"><span class="item-icon">🔒</span> Privacy requests</button>
+        <button class="nav-item" data-section="data"><span class="item-icon">💾</span> Data & backups</button>
+        <button class="nav-item" data-section="email"><span class="item-icon">✉️</span> Email</button>
+        <button class="nav-item" data-section="maintenance"><span class="item-icon">🚧</span> Maintenance</button>
+        <div class="nav-label">Product</div>
+        <button class="nav-item" data-section="usage"><span class="item-icon">📈</span> Usage</button>
+        <button class="nav-item" data-section="limits"><span class="item-icon">⏱️</span> Rate limits</button>
+        <button class="nav-item" data-section="billing"><span class="item-icon">💳</span> Billing</button>
+        <button class="nav-item" data-section="release"><span class="item-icon">🚀</span> Release</button>
+        <button class="nav-item" data-section="diagnostics"><span class="item-icon">🔍</span> Diagnostics</button>
+      </nav>
+      <div class="sidebar-foot"><a href="auth.html" target="_top">Account</a><a href="apply-engine.html" target="_top">Automation Center</a><a href="career-suite.html" target="_top">Career Suite</a><a href="company-intel.html" target="_top">Comp Radar</a><a href="index.html" target="_top">Dashboard</a></div>
+      
+      <!-- ChatGPT-Style User Profile & Account Switcher Mount -->
+      <div id="sidebarUserProfileMount"></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><p class="eyebrow">ADMINISTRATION</p><h1 id="pageTitle">Overview</h1><p id="pageSubtitle">Operational control without changing Applyra's stabilized career features.</p></div>
+        <div class="top-actions">
+          <button type="button" class="button secondary back-nav-btn" id="adminBackBtn" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-weight:700;font-size:12px;border:1px solid #cbd5e1;background:#fff;color:#1e293b;margin-right:6px;cursor:pointer;">← Back</button>
+          <span id="adminRoleBadge" class="role-badge">CHECKING ACCESS</span>
+          <button id="refreshAllBtn" type="button" class="secondary">Refresh</button>
+        </div>
+      </header>
+
+      <div id="globalStatus" class="global-status" role="status" aria-live="polite"></div>
+
+      <section id="accessGate" class="gate hidden">
+        <div class="gate-card">
+          <h2 id="gateTitle">Admin access required</h2>
+          <p id="gateText"></p>
+          <div id="gateActions" class="row"></div>
+        </div>
+      </section>
+
+      <section id="setupPanel" class="panel hidden">
+        <div class="panel-head"><div><h2>Authentication backend setup</h2><p>Bootstrap only. Enter public Supabase values; secrets stay on the backend.</p></div><span class="pill warn">SETUP MODE</span></div>
+        <div class="form-grid">
+          <label>Supabase project URL<input id="adminSupabaseUrl" type="url" placeholder="https://your-project.supabase.co" autocomplete="off" /></label>
+          <label>Publishable / anon key<input id="adminPublishableKey" type="password" placeholder="sb_publishable_… or anon JWT" autocomplete="off" /></label>
+          <label class="check"><input id="adminRequireAuth" type="checkbox" checked /> Require sign-in before Applyra workspaces</label>
+        </div>
+        <div class="row"><button id="saveAdminSetupBtn" class="primary" type="button">Save public auth configuration</button></div>
+        <p class="note">Never paste a Supabase service-role key, Google secret, LinkedIn secret, SMTP password, Naukri password, OTP, cookie or bearer token here.</p>
+      </section>
+
+      <div id="sections">
+        <section class="section active" data-section-panel="overview">
+          <div id="overviewCards" class="metric-grid"></div>
+          <div class="grid two"><article class="panel"><div class="panel-head"><h2>System summary</h2><span id="overallHealth" class="pill">Checking</span></div><div id="systemSummary" class="status-list"></div></article><article class="panel"><div class="panel-head"><h2>Release integrity</h2></div><div id="releaseIntegrity" class="status-list"></div></article></div>
+        </section>
+
+        <section class="section" data-section-panel="users">
+          <article class="panel"><div class="panel-head"><div><h2>Users</h2><p>Server-authorized account administration. Passwords and OAuth tokens are never exposed.</p></div><button id="loadUsersBtn" class="secondary" type="button">Reload users</button></div><div class="toolbar"><input id="userSearch" type="search" placeholder="Filter loaded users by email or ID" /><span id="usersStatus" class="muted"></span></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Provider</th><th>Last sign-in</th><th>Status</th><th>Admin role</th><th>Actions</th></tr></thead><tbody id="usersBody"></tbody></table></div></article>
+        </section>
+
+        <section class="section" data-section-panel="authentication">
+          <div class="grid two"><article class="panel"><div class="panel-head"><h2>Applyra authentication</h2></div><div id="authStatusList" class="status-list"></div><div class="row"><a class="button secondary" href="auth.html">Open sign-in page</a></div></article><article class="panel"><div class="panel-head"><h2>Admin authorization</h2></div><div id="adminAuthorization" class="status-list"></div><p class="note">Admin permission is verified by the backend on every privileged request. Hiding a button is not treated as authorization.</p></article></div>
+        </section>
+
+        <section class="section" data-section-panel="providers">
+          <article class="panel"><div class="panel-head"><div><h2>Authentication & portal providers</h2><p>Provider secrets remain server-side. “Not verified” means Applyra has not proven a real login flow yet.</p></div></div><div id="providersGrid" class="provider-grid"></div></article>
+        </section>
+
+        <section class="section" data-section-panel="features">
+          <article class="panel"><div class="panel-head"><div><h2>Feature policy registry</h2><p>Remote admin policy is stored separately from the stabilized extension core. Existing features are not silently rewritten by these controls.</p></div><button id="saveFeaturesBtn" class="primary" type="button">Save policy</button></div><div id="featureFlags" class="switch-grid"></div><p class="note">A flag is only an enforcement control after that feature explicitly consumes the policy. This build does not pretend otherwise.</p></article>
+        </section>
+
+        <section class="section" data-section-panel="automation"><div class="grid two"><article class="panel"><div class="panel-head"><h2>Automation status</h2></div><div id="automationStatus" class="status-list"></div></article><article class="panel"><div class="panel-head"><h2>Safety controls</h2></div><div id="automationSafety" class="status-list"></div></article></div></section>
+
+        <section class="section" data-section-panel="applications"><article class="panel"><div class="panel-head"><h2>Application operations</h2></div><div id="applicationMetrics" class="metric-grid compact"></div><p class="note">Counts come from real local/cloud records. Unavailable telemetry is labeled unavailable, never shown as zero.</p></article></section>
+
+        <section class="section" data-section-panel="portal-health"><article class="panel"><div class="panel-head"><h2>Portal compatibility</h2></div><div id="portalHealth" class="status-list"></div></article></section>
+
+        <section class="section" data-section-panel="health"><article class="panel"><div class="panel-head"><h2>System health</h2><button id="runPreflightBtn" class="secondary" type="button">Run production preflight</button></div><div id="healthStatus" class="status-list"></div></article></section>
+
+        <section class="section" data-section-panel="errors"><article class="panel"><div class="panel-head"><div><h2>Error monitoring</h2><p>Sanitized operational failures only. No passwords, cookies, bearer tokens or resumes.</p></div><button id="loadErrorsBtn" class="secondary" type="button">Reload</button></div><div id="errorsList" class="event-list"></div></article></section>
+
+        <section class="section" data-section-panel="audit"><article class="panel"><div class="panel-head"><div><h2>Admin audit log</h2><p>Privileged backend actions are recorded separately from normal user activity.</p></div><button id="loadAuditBtn" class="secondary" type="button">Reload</button></div><div id="auditList" class="event-list"></div></article></section>
+
+        <section class="section" data-section-panel="security"><div class="grid two"><article class="panel"><div class="panel-head"><h2>Security posture</h2></div><div id="securityStatus" class="status-list"></div></article><article class="panel danger-zone"><div class="panel-head"><h2>Protected boundaries</h2></div><ul><li>No service-role key in the extension.</li><li>No Google or LinkedIn client secret in the extension.</li><li>No Naukri password, OTP or cookie storage.</li><li>No raw admin SQL console.</li><li>No secret-bearing support export.</li></ul></article></div></section>
+
+        <section class="section" data-section-panel="privacy"><article class="panel"><div class="panel-head"><div><h2>Privacy requests</h2><p>Export/delete/correction request queue when the admin backend is deployed.</p></div><button id="loadPrivacyBtn" class="secondary" type="button">Reload</button></div><div id="privacyList" class="event-list"></div></article></section>
+
+        <section class="section" data-section-panel="data"><div class="grid two"><article class="panel"><div class="panel-head"><h2>Data integrity</h2></div><div id="dataStatus" class="status-list"></div></article><article class="panel"><div class="panel-head"><h2>Backups</h2></div><div class="status-list"><div class="status-row"><span>Cloud backups</span><strong class="pill warn">SUPABASE MANAGED</strong></div><div class="status-row"><span>Extension private backup</span><strong class="pill good">AVAILABLE</strong></div></div><p class="note">Database restore points are managed in the Supabase project. This extension does not receive database credentials.</p></article></div></section>
+
+        <section class="section" data-section-panel="email"><article class="panel"><div class="panel-head"><h2>Email / SMTP</h2></div><div id="emailStatus" class="status-list"></div><p class="note">SMTP credentials belong in Supabase/provider secrets. The Admin Console intentionally has no SMTP password field.</p></article></section>
+
+        <section class="section" data-section-panel="maintenance"><article class="panel"><div class="panel-head"><div><h2>Maintenance policy</h2><p>Stored as an admin policy without silently changing existing stabilized feature behavior.</p></div><button id="saveMaintenanceBtn" class="primary" type="button">Save policy</button></div><div class="form-grid"><label>Mode<select id="maintenanceMode"><option value="off">Off</option><option value="cloud-only">Cloud services maintenance</option><option value="automation-paused">Automation paused</option><option value="authenticated-actions-paused">Authenticated actions paused</option></select></label><label>Message<input id="maintenanceMessage" maxlength="280" placeholder="Optional user-facing maintenance message" /></label></div><p class="note">This policy is recorded remotely. Existing core workflows remain unchanged until an explicit, tested enforcement hook is approved.</p></article></section>
+
+        <section class="section" data-section-panel="usage"><article class="panel"><div class="panel-head"><h2>Usage</h2></div><div id="usageMetrics" class="metric-grid compact"></div></article></section>
+
+        <section class="section" data-section-panel="limits"><article class="panel"><div class="panel-head"><div><h2>Rate limits & quotas</h2><p>Policy registry for future hosted limits.</p></div><button id="saveLimitsBtn" class="primary" type="button">Save policy</button></div><div class="form-grid"><label>Auth attempts / 15 min<input id="limitAuth" type="number" min="1" max="500" value="20" /></label><label>Email actions / hour<input id="limitEmail" type="number" min="1" max="1000" value="30" /></label></div></article></section>
+
+        <section class="section" data-section-panel="billing">
+          <div class="grid two">
+            <article class="panel"><div class="panel-head"><div><h2>Razorpay billing</h2><p>Real recurring subscriptions through the server-side billing API. Secrets never enter the extension.</p></div><button id="refreshBillingBtn" class="secondary" type="button">Refresh</button></div><div id="billingProviderStatus" class="status-list"></div></article>
+            <article class="panel"><div class="panel-head"><h2>Billing summary</h2></div><div id="billingSummary" class="metric-grid compact"></div></article>
+          </div>
+          <article class="panel"><div class="panel-head"><div><h2>Create Razorpay plan</h2><p>Creates the immutable provider plan in Razorpay and stores its mapping in Applyra. Super admin only.</p></div><button id="createBillingPlanBtn" class="primary" type="button">Create Razorpay plan</button></div>
+            <div class="form-grid">
+              <label>Plan name<input id="billingPlanName" maxlength="120" placeholder="Applyra Pro" /></label>
+              <label>Slug<input id="billingPlanSlug" maxlength="64" placeholder="pro-monthly" /></label>
+              <label>Amount<input id="billingPlanAmount" type="number" min="1" step="0.01" placeholder="499" /></label>
+              <label>Currency<select id="billingPlanCurrency"><option value="INR">INR</option><option value="USD">USD</option></select></label>
+              <label>Billing period<select id="billingPlanPeriod"><option value="monthly">Monthly</option><option value="yearly">Yearly</option><option value="quarterly">Quarterly</option><option value="weekly">Weekly</option><option value="daily">Daily</option></select></label>
+              <label>Interval<input id="billingPlanInterval" type="number" min="1" max="12" value="1" /></label>
+              <label>Total billing cycles<input id="billingPlanCount" type="number" min="1" max="120" value="12" /></label>
+              <label>Description<input id="billingPlanDescription" maxlength="280" placeholder="Optional plan description" /></label>
+            </div>
+            <p class="note">No Razorpay Key Secret or webhook secret is accepted here. Configure those only in Supabase Edge Function Secrets.</p>
+          </article>
+          <article class="panel"><div class="panel-head"><div><h2>Plans</h2><p>Provider plan IDs are shown for operations; amounts cannot be edited after creation.</p></div></div><div id="billingPlansList" class="event-list"></div></article>
+          <article class="panel"><div class="panel-head"><div><h2>Recent subscriptions</h2><p>Server records synchronized from Razorpay checkout/API/webhooks.</p></div></div><div id="billingSubscriptionsList" class="event-list"></div></article>
+        </section>
+
+        <section class="section" data-section-panel="release"><div class="grid two"><article class="panel"><div class="panel-head"><h2>Release</h2></div><div id="releaseStatus" class="status-list"></div></article><article class="panel"><div class="panel-head"><h2>Environment</h2></div><div id="environmentStatus" class="status-list"></div></article></div></section>
+
+        <section class="section" data-section-panel="diagnostics"><article class="panel"><div class="panel-head"><div><h2>Sanitized diagnostics</h2><p>No passwords, cookies, bearer tokens or OAuth secrets.</p></div><button id="refreshDiagnosticsBtn" class="secondary" type="button">Refresh diagnostics</button></div><pre id="diagnosticsOutput" class="code"></pre></article></section>
+      </div>
+    </main>
+  </div>
+  <script src="admin.js"></script>
+  <script src="theme-controls.js"></script>
+  </body>
+</html>

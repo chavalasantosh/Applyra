@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.gemini/
+.idea/
+.vscode/
+
+# Temporary / Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Release Zips (Optional - uncomment if you do not want zip files in git)
+# *.zip

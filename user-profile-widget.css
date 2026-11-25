@@ -1,0 +1,664 @@
+/* ==============================================================================
+   APPLYRA MODERN USER PROFILE WIDGET & ACCOUNT SWITCHER
+   ============================================================================== */
+
+.user-profile-widget {
+  position: relative;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+  box-sizing: border-box;
+}
+
+.user-profile-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.user-profile-btn:hover,
+.user-profile-btn.active {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+}
+
+.user-avatar {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+.user-avatar.sm {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  font-size: 12px;
+}
+
+.user-avatar.secondary {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.user-meta-block {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-display-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.user-plan-label {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.2;
+}
+
+.user-dots-icon {
+  margin-left: auto;
+  color: #94a3b8;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* ==============================================================================
+   CLEAN UNIFIED FLOATING POPOVER MENU (ZERO HORIZONTAL SCROLL & ZERO CLIPPING)
+   ============================================================================== */
+.chatgpt-popover {
+  position: fixed !important;
+  width: 290px !important;
+  min-width: 290px !important;
+  max-width: 320px !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  border-radius: 16px !important;
+  padding: 10px !important;
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.08) !important;
+  z-index: 9999999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif !important;
+  animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+}
+
+.chatgpt-popover::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chatgpt-popover::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 999px;
+}
+
+.chatgpt-popover.hidden {
+  display: none !important;
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Popover User Header Card */
+.popover-user-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border: 1px solid #edf2f7;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  box-sizing: border-box;
+}
+
+.popover-user-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.popover-user-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.popover-user-email {
+  font-size: 11.5px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.popover-plan-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #dbeafe;
+  line-height: 1.2;
+}
+
+/* Popover Accounts Section */
+.popover-accounts-section {
+  padding: 4px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.popover-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  padding: 6px 12px 4px;
+}
+
+.popover-accounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.account-entry {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.account-entry:hover {
+  background: #f1f5f9;
+}
+
+.account-entry.active {
+  background: #eff6ff;
+}
+
+.account-entry .acc-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.account-entry .acc-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.account-entry .acc-email {
+  display: block;
+  font-size: 11.5px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.account-entry .acc-check {
+  font-size: 14px;
+  color: #2563eb;
+  font-weight: 700;
+  margin-left: auto;
+}
+
+.add-account-action {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+  box-sizing: border-box;
+}
+
+.add-account-action:hover {
+  background: #eff6ff;
+}
+
+.add-account-action span.plus-icon {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.popover-item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #334155;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: left;
+  transition: background 0.15s ease, color 0.15s ease;
+  user-select: none;
+  box-sizing: border-box;
+  min-height: 38px;
+}
+
+.popover-item:hover,
+.popover-item.active {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.popover-item .item-icon {
+  font-size: 15px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.popover-divider {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 6px 0;
+}
+
+/* Danger / Log out item */
+.popover-item.danger-logout {
+  color: #dc2626;
+}
+
+.popover-item.danger-logout:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.popover-item.danger-logout .item-icon {
+  color: #dc2626;
+}
+
+/* ==============================================================================
+   SIDEBAR COLLAPSED MODE & RESPONSIVENESS
+   ============================================================================== */
+.app-body {
+  grid-template-columns: 240px minmax(0, 1fr) !important;
+  transition: grid-template-columns 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+aside.sidebar,
+.sidebar {
+  width: 240px !important;
+  min-width: 240px !important;
+  box-sizing: border-box !important;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  overflow-x: hidden !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
+}
+
+main.main-content,
+.main-content {
+  margin-left: 0 !important;
+  padding: 24px 28px 36px !important;
+}
+
+aside.sidebar::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+aside.sidebar::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 999px;
+}
+
+/* Collapsed state */
+body.sidebar-collapsed .app-body {
+  grid-template-columns: 72px minmax(0, 1fr) !important;
+}
+
+body.sidebar-collapsed aside.sidebar,
+body.sidebar-collapsed .sidebar,
+aside.sidebar.collapsed,
+.sidebar.collapsed {
+  width: 72px !important;
+  min-width: 72px !important;
+  padding: 16px 8px !important;
+}
+
+body.sidebar-collapsed main.main-content,
+body.sidebar-collapsed .main-content {
+  margin-left: 0 !important;
+}
+
+.sidebar-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px 14px;
+}
+
+.sidebar-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-header-left img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+.sidebar-header-left strong {
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  color: #0f172a;
+}
+
+.sidebar-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sidebar-icon-btn {
+  background: transparent;
+  border: 0;
+  color: #94a3b8;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  transition: all 0.18s ease;
+}
+
+.sidebar-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #0f172a;
+}
+
+.sidebar-nav-search-wrap {
+  margin: 0 6px 14px;
+  position: relative;
+}
+
+.sidebar-nav-search-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 8px 12px 8px 30px;
+  color: #0f172a;
+  font-size: 12.5px;
+  outline: none;
+  transition: border-color 0.18s ease;
+  box-sizing: border-box;
+}
+
+.sidebar-nav-search-input:focus {
+  border-color: #3b82f6;
+  background: #ffffff;
+}
+
+.sidebar-nav-search-wrap::before {
+  content: '🔍';
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ==============================================================================
+   OFFICIAL APPLYRA PRODUCT BRAND LOGO & CLEAN SIDEBAR TOGGLE
+   ============================================================================== */
+.brand-mark {
+  background: transparent !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+.applyra-product-brand-img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  display: block;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.applyra-product-brand-img:hover {
+  transform: scale(1.05);
+}
+
+.applyra-sidebar-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 10px;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.applyra-sidebar-toggle-btn:hover {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}
+
+.applyra-sidebar-toggle-btn:active {
+  background: #e2e8f0;
+  transform: scale(0.95);
+}
+
+.applyra-sidebar-toggle-btn svg {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.sidebar-collapsed .applyra-sidebar-toggle-btn .sidebar-toggle-arrow {
+  d: path("m11 9 3 3-3 3");
+}
+
+body.sidebar-collapsed .sidebar .nav-item span,
+body.sidebar-collapsed .sidebar .profile-status,
+body.sidebar-collapsed .sidebar .user-meta-block,
+body.sidebar-collapsed .sidebar .user-dots-icon,
+body.sidebar-collapsed .sidebar-header-left strong,
+body.sidebar-collapsed .env-badge,
+body.sidebar-collapsed .sidebar-nav-search-wrap,
+body.sidebar-collapsed .nav-label,
+body.sidebar-collapsed .brand span,
+body.sidebar-collapsed .sidebar-foot,
+aside.sidebar.collapsed .nav-item span,
+aside.sidebar.collapsed .profile-status,
+aside.sidebar.collapsed .user-meta-block,
+aside.sidebar.collapsed .user-dots-icon,
+aside.sidebar.collapsed .sidebar-header-left strong,
+aside.sidebar.collapsed .env-badge,
+aside.sidebar.collapsed .sidebar-nav-search-wrap,
+aside.sidebar.collapsed .nav-label,
+aside.sidebar.collapsed .brand span,
+aside.sidebar.collapsed .sidebar-foot {
+  display: none !important;
+}
+
+body.sidebar-collapsed .sidebar .nav-item,
+aside.sidebar.collapsed .nav-item {
+  justify-content: center !important;
+  padding: 10px 0 !important;
+  border-radius: 10px;
+}
+
+body.sidebar-collapsed .sidebar .user-profile-btn,
+aside.sidebar.collapsed .user-profile-btn {
+  justify-content: center !important;
+  padding: 8px 4px !important;
+}
+
+body.sidebar-collapsed .sidebar .user-avatar,
+aside.sidebar.collapsed .user-avatar {
+  margin: 0 auto;
+}
+
+/* ==============================================================================
+   DASHBOARD NATIVE SIDEBAR MOUNT (index.html)
+   ============================================================================== */
+.dashboard-profile-mount {
+  margin-top: auto;
+  padding: 10px 0 6px;
+  width: 100%;
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 5;
+  background: var(--surface, #ffffff);
+  box-sizing: border-box;
+}
+
+/* ==============================================================================
+   HERO / TOP-BAR USER MOUNT (apply-engine.html, career-suite.html)
+   ============================================================================== */
+.hero-user-mount {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  margin-left: 8px;
+}
+
+.hero-user-mount .user-profile-widget {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+  width: auto;
+}
+
+.hero-user-mount .user-profile-btn {
+  padding: 4px 12px 4px 6px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.hero-user-mount .user-profile-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.hero-user-mount .user-avatar {
+  width: 30px;
+  height: 30px;
+  font-size: 11.5px;
+}
+
+.hero-user-mount .user-display-name {
+  font-size: 12.5px;
+  max-width: 110px;
+}
+
+.hero-user-mount .user-plan-label {
+  display: none;
+}

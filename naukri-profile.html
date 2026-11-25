@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Applyra · Naukri Profile Mirror</title>
+  <link rel="stylesheet" href="naukri-profile.css" />
+  <link rel="stylesheet" href="theme.css" />
+  </head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">APPLYRA · NAUKRI DIRECT MAP</div>
+      <h1>Naukri Profile Mirror</h1>
+      <p>Exact section-by-section capture from Naukri's current profile DOM. Review or open the corresponding Naukri editor without guessing page text.</p>
+    </div>
+    <div class="top-actions">
+      <button id="backBtn" class="secondary" style="display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:12px;cursor:pointer;">← Back</button>
+      <button id="open-naukri" class="secondary">Open Naukri profile</button>
+      <button id="capture" class="primary">Capture &amp; save now</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="status" class="status">Loading saved profile…</div>
+    <section class="summary" id="summary"></section>
+    <section class="privacy-note">
+      <strong>Matching boundary</strong>
+      <span>Contact, date of birth, category, marital status, address and Diversity &amp; Inclusion are stored only inside the private Naukri mirror. They are not copied into Applyra's job-matching fields or auto-answer memory.</span>
+    </section>
+    <div id="sections" class="sections"></div>
+  </main>
+  <script src="naukri-profile.js"></script>
+  <script src="theme-controls.js"></script>
+  </body>
+</html>

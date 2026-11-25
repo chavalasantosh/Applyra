@@ -1,0 +1,54 @@
+/* Scoped to native career views; existing dashboard screens retain their styles. */
+.applyra-integrated{--primary:#195ce5;--ink:#18223a;--muted:#68738b;--border:#e0e5ee;--white:#fff;--good:#279b50;--bad:#b34253;font:14px/1.55 system-ui;color:var(--ink)}
+.applyra-integrated *{box-sizing:border-box}
+.applyra-integrated .hero{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:22px}
+.applyra-integrated .hero>div:first-child{max-width:680px}
+.applyra-integrated .eyebrow{font-size:11px;letter-spacing:.09em;font-weight:750;color:var(--primary)}
+.applyra-integrated h1{font-size:28px;letter-spacing:-.03em;margin:5px 0 8px;line-height:1.25}
+.applyra-integrated h2{font-size:17px;margin:0 0 12px;letter-spacing:-.02em}
+.applyra-integrated h3{font-size:15px;margin:12px 0 5px}
+.applyra-integrated h4{font-size:14px;margin:10px 0}
+.applyra-integrated p{margin:8px 0}
+.applyra-integrated .muted,.applyra-integrated .fine{color:var(--muted)}
+.applyra-integrated .fine{font-size:12px}
+.applyra-integrated .notice{border:1px solid #dce5f7;background:#f0f5ff;color:#355887;padding:11px 14px;border-radius:9px;margin-bottom:20px;overflow-wrap:anywhere}
+.applyra-integrated .notice.error{background:#fff2f3;border-color:#ffdce1;color:var(--bad)}
+.applyra-integrated .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.applyra-integrated .two-col.compact{gap:14px}
+.applyra-integrated .panel{padding:22px;background:white;border:1px solid var(--border);border-radius:11px;margin:20px 0;box-shadow:0 2px 7px #18223a04}
+.applyra-integrated .two-col>.panel{margin:0 0 20px}
+.applyra-integrated .section-title{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.applyra-integrated .badge{font-size:10px;letter-spacing:.04em;color:var(--good);background:#eef9f1;padding:5px 8px;border-radius:5px;font-weight:750}
+.applyra-integrated label{display:block;font-size:12px;font-weight:650;color:#475570;margin:10px 0}
+.applyra-integrated input,.applyra-integrated textarea,.applyra-integrated select{display:block;width:100%;padding:10px 11px;border:1px solid #d7ddeb;border-radius:7px;margin-top:6px;background:#fff;color:var(--ink);font:inherit;font-size:13px}
+.applyra-integrated input[type=checkbox]{width:17px;display:inline-block;margin-right:7px;vertical-align:middle}
+.applyra-integrated textarea{resize:vertical;line-height:1.5}
+.applyra-integrated button,.applyra-integrated .button{padding:10px 14px;background:var(--primary);border:1px solid transparent;border-radius:7px;color:white;font:inherit;font-size:12px;font-weight:650;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.applyra-integrated button:disabled{opacity:.55;cursor:wait}
+.applyra-integrated button.secondary,.applyra-integrated .button.secondary{background:white;border-color:var(--border);color:var(--ink)}
+.applyra-integrated button.danger{background:#fff;color:var(--bad);border-color:#efcdd2}
+.applyra-integrated .actions,.applyra-integrated .toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.applyra-integrated .upload{background:#f8faff;border:1px dashed #a9bde6;padding:20px;border-radius:9px}
+.applyra-integrated .upload span{display:block;color:var(--muted);font-weight:400;margin-top:8px}
+.applyra-integrated .upload input{padding:8px;background:white;border-color:#e0e5ee}
+.applyra-integrated .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.applyra-integrated .metric{border:1px solid var(--border);border-radius:11px;padding:20px;background:white;text-align:center}
+.applyra-integrated .ring{--value:0;--color:var(--primary);width:88px;height:88px;background:conic-gradient(var(--color) calc(var(--value)*1%),#e7e8f3 0);border-radius:50%;padding:5px;margin:auto;display:grid;place-items:center}
+.applyra-integrated .ring span{background:white;border-radius:50%;height:78px;width:78px;display:grid;place-items:center;font-weight:750;font-size:21px}
+.applyra-integrated .metric p{font-size:12px;color:var(--muted)}
+.applyra-integrated .cards,.applyra-integrated .list{display:grid;gap:12px;margin-top:15px}
+.applyra-integrated .issue,.applyra-integrated .job,.applyra-integrated .item{border:1px solid var(--border);padding:18px;border-radius:9px;background:white}
+.applyra-integrated .issue.high{border-left:3px solid #d87b15}
+.applyra-integrated .evidence{padding:10px;background:#f7f9fc;border-radius:6px;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.applyra-integrated .tags{display:flex;gap:6px;flex-wrap:wrap}
+.applyra-integrated .tag{font-size:11px;border-radius:5px;padding:4px 8px;background:#edf3ff;color:#315d9e}
+.applyra-integrated summary{cursor:pointer;color:var(--primary);font-size:12px;font-weight:600;padding:8px 0}
+.applyra-integrated .job details{margin-top:12px}
+.applyra-integrated .empty{padding:20px;background:#f7f9fc;border-radius:8px;color:var(--muted)}
+.applyra-integrated .form{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 20px}
+.applyra-integrated .wide{grid-column:1/-1}
+.applyra-integrated :focus-visible{outline:3px solid #195ce533;outline-offset:2px}
+.applyra-integrated [hidden]{display:none!important}
+@media(max-width:1100px){.applyra-integrated .two-col{grid-template-columns:1fr}.applyra-integrated .hero{flex-wrap:wrap}}
+.portal-discovery{margin:22px 0;padding:18px;border:1px solid var(--border,#dbe3ef);border-radius:14px;background:var(--surface-soft,#f8faff)}.portal-discovery h2{margin-top:0}.portal-search-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin:14px 0}.portal-search-button{min-height:40px;border:1px solid var(--border-strong,#ccd6e5);border-radius:9px;background:white;color:var(--ink,#18223a);font-weight:650;cursor:pointer}.portal-search-button:hover{border-color:var(--blue,#195ce5);color:var(--blue,#195ce5)}.portal-discovery .toolbar{align-items:end;flex-wrap:wrap}.portal-discovery .toolbar label{display:grid;gap:5px;min-width:240px}.portal-discovery select,.portal-discovery input{min-height:38px;padding:8px 10px;border:1px solid var(--border-strong,#ccd6e5);border-radius:8px;background:white}
+.portal-heading{display:flex;justify-content:space-between;align-items:flex-start}.portal-heading p{color:var(--muted,#68738b)}.portal-discovery .form{margin-top:12px}.portal-import-row{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.portal-import-row label{display:grid;gap:5px;flex:1 1 280px}.portal-import-row select{width:100%}.toggle-field{display:flex!important;align-items:center;gap:9px;min-height:40px}.toggle-field input{width:17px;height:17px;margin:0;accent-color:var(--blue,#195ce5)}.toggle-field span{font-weight:650}

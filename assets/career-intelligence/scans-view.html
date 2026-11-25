@@ -1,0 +1,25 @@
+<div class="hero"><div><span class="eyebrow">OPPORTUNITY DISCOVERY</span><h1>Scheduled scans</h1><p>Find relevant roles using your resume and profile. Run a scan now or set a recurring schedule.</p></div></div><section class="panel">
+<h2>Your scan settings</h2><p>Find a concise shortlist against this candidate’s recorded skills. Each match includes requirements and gaps to review.</p>
+<p><strong>Browser schedule:</strong> Chrome must be running. Missed scans catch up when Chrome reopens. Times follow this device’s timezone. Each run checks saved and imported listings plus the public feeds listed in its results. Applyra does not claim to crawl every portal automatically.</p>
+<section class="portal-discovery" aria-labelledby="portalDiscoveryTitle">
+<h2 id="portalDiscoveryTitle">Search India job portals</h2>
+<p>Open searches on the portals you use, then import visible listings here. Applyra scans imported jobs on the next “Scan now” and scheduled runs. Portal search pages require your own sign-in where applicable.</p>
+<div class="form"><label class="wide">Search terms<input id="portalKeywords" value="Machine Learning MLOps Data AI Python Analytics" placeholder="e.g. MLOps engineer"></label><label>Location<input id="portalLocation" value="India" placeholder="India, Bengaluru"></label></div>
+<div id="portalSearchLinks" class="portal-search-grid"></div>
+<div class="toolbar"><label>Import from an open portal tab<select id="portalTabSelect"><option value="">Find open job search tabs…</option></select></label><button type="button" id="portalRefreshTabs" class="secondary">Find tabs</button><button type="button" id="portalImportVisible" class="secondary">Import visible jobs</button></div>
+<p id="portalImportStatus" role="status" aria-live="polite"></p>
+</section>
+<form id="scanForm"><div class="form">
+<label>Frequency<select id="scanFrequency"><option value="daily">Every day</option><option value="weekly">Every week</option><option value="monthly">Every month</option></select></label>
+<label>Time<input type="time" id="scanTime" value="08:00" required></label>
+<label id="scanWeekField" hidden>Weekday<select id="scanWeekday"><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="0">Sunday</option></select></label>
+<label id="scanMonthField" hidden>Day of month<input type="number" id="scanMonthday" min="1" max="31" value="1"><small>Uses the last day in shorter months.</small></label>
+<label class="wide">Target roles / keywords, separated by commas<textarea id="scanRoles" required placeholder="Machine learning, MLOps, Data, Business intelligence, Python, Analytics"></textarea></label>
+<label>Locations, separated by commas<input id="scanLocations" placeholder="Leave empty for all locations"></label>
+<label>Minimum keyword fit (0–100)<input id="scanScore" type="number" min="0" max="100" value="60" required></label>
+<label class="toggle-field"><input id="scanEnabled" type="checkbox"><span>Enable recurring scans</span></label>
+</div><div class="toolbar"><button type="submit">Save schedule</button><button type="button" id="scanRun" class="secondary">Scan now</button></div></form>
+<p id="scanStatus" role="status" aria-live="polite">Loading schedule…</p>
+<p>Fit is a local keyword heuristic, not an AI assessment or a hiring probability. Skills absent from supplied profile/resume evidence are gaps to verify, not proof you lack them. Listings may be delayed; confirm availability and location eligibility.</p>
+<div id="scanResults" class="list"></div>
+</section>

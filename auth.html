@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Applyra Account</title>
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <button type="button" id="authBackBtn" class="back-nav-btn" style="display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:12px;color:#1459df;padding:6px 12px;border-radius:6px;background:#f0f5ff;border:1px solid #dbeafe;cursor:pointer;">← Back</button>
+      </div>
+      <header class="head">
+        <div class="brand-row">
+          <img src="assets/brand/icon48.png" alt="Applyra" />
+          <div class="brand-title">
+            <span class="brand-name">Applyra<span>.</span></span>
+            <span class="applyra-badge">Secure Account</span>
+          </div>
+        </div>
+        <h1 id="title">Sign in to Applyra</h1>
+        <p id="subtitle">One account for your private career workspace. Portal passwords never pass through Applyra.</p>
+      </header>
+
+      <div class="body">
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+
+        <div id="authForms">
+          <div class="providers">
+            <button id="googleBtn" class="provider" type="button"><span class="p-dot"></span>Continue with Google / Gmail</button>
+            <button id="linkedinBtn" class="provider" type="button"><span class="p-dot"></span>Continue with LinkedIn</button>
+            <button id="outlookBtn" class="provider" type="button"><span class="p-dot"></span>Continue with Microsoft / Outlook</button>
+          </div>
+          <p class="provider-note">Enterprise and job seekers on professional networks can sign in with email below.</p>
+          
+          <div class="divider">or use email</div>
+          
+          <div class="tabs" role="tablist">
+            <button id="signinTab" class="tab active" type="button">Sign in</button>
+            <button id="signupTab" class="tab" type="button">Create account</button>
+          </div>
+
+          <form id="emailForm" autocomplete="on">
+            <label id="fullNameWrap" class="hidden">Full name
+              <input id="fullName" name="fullName" type="text" autocomplete="name" maxlength="120" placeholder="Your full name" />
+            </label>
+            <label>Email address
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="320" required placeholder="you@example.com" />
+            </label>
+            <label>Password
+              <div class="password-row">
+                <input id="password" name="password" type="password" autocomplete="current-password" minlength="12" maxlength="128" required placeholder="At least 12 characters" />
+                <button id="showPassword" type="button" aria-label="Show password">Show</button>
+              </div>
+            </label>
+            <label id="confirmWrap" class="hidden">Confirm password
+              <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" minlength="12" maxlength="128" placeholder="Repeat password" />
+            </label>
+            <label id="phoneWrap" class="hidden">Phone number
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="+91 98765 43210" />
+            </label>
+            <label id="dobWrap" class="hidden">Date of birth <span class="tiny-inline">(optional)</span>
+              <input id="dob" name="dob" type="date" autocomplete="bday" />
+            </label>
+            <p id="dobNote" class="tiny hidden">Skip this if you'd rather not share it — Applyra can pick it up later from a connected Naukri profile that already lists a date of birth.</p>
+            
+            <label class="remember">
+              <input id="remember" type="checkbox" checked /> Keep me signed in on this browser
+            </label>
+            <div class="remember-hint">Stores your secure session token locally in this extension context.</div>
+            
+            <button id="emailSubmit" class="primary" type="submit">Sign in</button>
+          </form>
+        </div>
+
+        <div id="accountView" class="account">
+          <div class="account-box">
+            <div id="avatar" class="avatar">AP</div>
+            <div>
+              <strong id="accountName">Signed in</strong>
+              <small id="accountEmail"></small>
+              <small id="accountProvider"></small>
+            </div>
+          </div>
+          <button id="continueBtn" class="primary" type="button">Continue</button>
+          <button id="switchUserBtn" class="secondary" type="button">🔄 Switch Account</button>
+          <button id="billingBtn" class="secondary" type="button">Plan & Billing</button>
+          <button id="signoutBtn" class="secondary" type="button">Sign out</button>
+
+          <div class="connection">
+            <h3>Naukri Connection</h3>
+            <p id="naukriState">Applyra connects to the Naukri session already open in this browser. It never asks for your Naukri password, OTP or cookies.</p>
+            <div class="row">
+              <button id="openNaukriBtn" class="secondary" type="button">Open Naukri</button>
+              <button id="checkNaukriBtn" class="secondary" type="button">Check Connection</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="security-note">
+          <strong>Security Guarantee:</strong> Applyra runs locally in your browser. OAuth uses code flow with PKCE. Portal passwords and OTPs are never stored or transmitted.
+        </div>
+
+        <!-- Strictly Gated Developer Section (Hidden for normal end-users) -->
+        <details id="setup" class="setup dev-only hidden">
+          <summary>⚙️ Developer Authentication Setup</summary>
+          <p>Configure public Supabase project parameters for development and testing. Never paste service-role keys.</p>
+          <div class="setup-grid">
+            <label>Supabase project URL
+              <input id="supabaseUrl" type="url" placeholder="https://your-project.supabase.co" autocomplete="off" />
+            </label>
+            <label>Publishable / anon key
+              <input id="publishableKey" type="password" autocomplete="off" placeholder="sb_publishable_… or legacy anon JWT" />
+            </label>
+            <label class="remember">
+              <input id="requireAuth" type="checkbox" checked /> Require sign-in before opening Applyra workspaces
+            </label>
+            <button id="saveSetupBtn" class="primary" type="button">Save Auth Configuration</button>
+            <button id="adminConsoleBtn" class="secondary" type="button">Open Admin Console</button>
+          </div>
+          <div class="tiny" id="redirectHint"></div>
+        </details>
+
+        <div class="auth-footer">
+          <span id="versionTrigger" style="cursor:pointer;" title="Applyra Career Suite">Applyra v2.9.2</span>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <script src="auth.js"></script>
+  <script src="theme-controls.js"></script>
+  </body>
+</html>

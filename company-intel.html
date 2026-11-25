@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Company & Compensation Intelligence — Applyra</title>
+  <link rel="icon" href="assets/brand/icon32.png" />
+  <link rel="stylesheet" href="company-intel.css" />
+  <link rel="stylesheet" href="download-toast.css" />
+  <link rel="stylesheet" href="theme.css" />
+  </head>
+<body>
+  <main class="shell">
+    <!-- Header -->
+    <header class="top-header">
+      <div class="brand-lockup">
+        <img src="assets/brand/icon48.png" alt="Applyra" />
+        <div>
+          <h1 class="brand-title">Applyra Intelligence Studio</h1>
+          <div class="brand-subtitle">Verified compensation benchmarks, market opportunities, cross-company leveling & live pipeline sync</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button type="button" id="intelBackBtn" class="hdr-btn" style="cursor:pointer;font-weight:750;">← Back</button>
+        <button id="togglePipelineSettingsBtn" class="hdr-btn" style="border-color:#38bdf8;color:#0284c7;font-weight:750;">⚙ Data Pipeline (3 Sources)</button>
+        <a href="career-suite.html" target="_top" class="hdr-btn">Career Suite</a>
+        <a href="apply-engine.html" target="_top" class="hdr-btn">Automation Center</a>
+      </div>
+    </header>
+
+    <!-- Command Strip & Hub Explorer -->
+    <section class="command-strip">
+      <div class="command-row">
+        <div class="field-group" style="flex: 1.8;">
+          <span class="field-label">Employer:</span>
+          <input type="text" id="companyInput" list="companiesList" class="field-input" placeholder="Search any employer (e.g. Google, TCS, Infosys, Flipkart, Stripe)..." value="" />
+          <datalist id="companiesList">
+            <!-- Populated dynamically -->
+          </datalist>
+        </div>
+        <div class="field-group" style="flex: 1.4;">
+          <span class="field-label">Market Region & Currency:</span>
+          <select id="currencySelect" class="field-select">
+            <option value="INR" selected>🇮🇳 India (INR - ₹ Lakhs / Cr)</option>
+            <option value="USD">🇺🇸 United States (USD - $k / yr)</option>
+            <option value="EUR">🇪🇺 European Union (EUR - €k / yr)</option>
+            <option value="GBP">🇬🇧 United Kingdom (GBP - £k / yr)</option>
+            <option value="CAD">🇨🇦 Canada (CAD - C$k / yr)</option>
+            <option value="AUD">🇦🇺 Australia (AUD - A$k / yr)</option>
+            <option value="SGD">🇸🇬 Singapore (SGD - S$k / yr)</option>
+            <option value="AED">🇦🇪 UAE / Dubai (AED - د.إ k / yr)</option>
+            <option value="CHF">🇨🇭 Switzerland (CHF - CHF k / yr)</option>
+            <option value="JPY">🇯🇵 Japan (JPY - ¥M / yr)</option>
+            <option value="GLOBAL">🌐 Global Normalized (USD - $k / yr)</option>
+          </select>
+        </div>
+        <div class="field-group" style="flex: 1.8;">
+          <span class="field-label">Track / Role (Your Choice):</span>
+          <input type="text" id="trackInput" list="tracksList" class="field-input" placeholder="Type or select any role (e.g. Backend, DevOps, AI/ML, Product, QA)..." value="Software Engineer" />
+          <datalist id="tracksList">
+            <option value="Software Engineer">
+            <option value="Backend Engineer">
+            <option value="Frontend Engineer">
+            <option value="Full Stack Developer">
+            <option value="Mobile Engineer (iOS / Android)">
+            <option value="DevOps & Cloud SRE">
+            <option value="Data Engineer">
+            <option value="Data Scientist">
+            <option value="AI / Machine Learning Engineer">
+            <option value="QA Automation / SDET">
+            <option value="Product Manager">
+            <option value="Technical Program Manager (TPM)">
+            <option value="Product Designer / UI/UX">
+            <option value="Security / Cybersecurity Engineer">
+            <option value="Solutions Architect">
+            <option value="Engineering Manager">
+            <option value="SAP / ERP Technical Consultant">
+            <option value="Business Analyst / BI Developer">
+            <option value="Database Administrator (DBA)">
+            <option value="Cloud Architect">
+          </datalist>
+        </div>
+      </div>
+
+      <!-- Categories Selector Bar -->
+      <div class="categories-bar" id="categoryTabs">
+        <button class="category-pill active" data-cat="india_tech">🇮🇳 India Tech & Services</button>
+        <button class="category-pill" data-cat="top_tech">🚀 Top Tech (Tier 1)</button>
+        <button class="category-pill" data-cat="cloud_unicorns">🦄 Cloud & High-Growth</button>
+        <button class="category-pill" data-cat="fintech_quant">🏦 FinTech & Quant</button>
+        <button class="category-pill" data-cat="ai_hardware">⚡ AI & Systems</button>
+        <button class="category-pill" data-cat="user">📌 From Your Saved Jobs</button>
+      </div>
+
+      <!-- Quick Chips Container -->
+      <div class="chips-row">
+        <span class="chips-label" id="chipsLabel">EXPLORE HUBS:</span>
+        <div class="chips-container" id="quickChipsContainer">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav" id="intelTabs">
+      <button class="tab-btn active" data-tab="livejobs">💼 Live Market Openings & CTC</button>
+      <button class="tab-btn" data-tab="charts">📊 Compensation Distribution</button>
+      <button class="tab-btn" data-tab="leveling">🪜 Career Progression & Leveling</button>
+      <button class="tab-btn" data-tab="pipeline">📌 Your Pipeline Matching</button>
+      <button class="tab-btn" data-tab="calculator">🧮 Offer Simulator</button>
+    </nav>
+
+    <!-- ============================================================== -->
+    <!-- TAB 1: LIVE MARKET OPENINGS & VERIFIED CTC                     -->
+    <!-- ============================================================== -->
+    <section class="tab-panel active" id="panel-livejobs">
+      <div class="embed-card">
+        <div class="embed-head">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <img id="activeCompanyLogo" src="" alt="Logo" class="dossier-logo" style="display:none;" />
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <h2 id="liveJobsTitle" style="margin:0;">Company Intelligence</h2>
+                <span id="dossierTierBadge" class="tier-pill">Market Intelligence</span>
+              </div>
+              <p id="liveJobsSubtitle" style="margin:3px 0 0;font-size:12px;color:var(--text-secondary);">Real-time active roles with verified salary brackets and role specifications.</p>
+            </div>
+          </div>
+          <span id="activeSourceBadge" class="source-badge">● LIVE INTELLIGENCE</span>
+        </div>
+
+        <!-- Real-Time Data Pipeline Status Bar -->
+        <div id="pipelineStatusBar" style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:var(--radius-sm);padding:8px 14px;margin-bottom:14px;font-size:11.5px;color:#0369a1;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <strong style="color:#0284c7;">Active Pipeline:</strong>
+            <span id="pipelineStatusText">Connected: Applyra Real-Time Market Intelligence · Workspace Extractor DB · Community Cloud Sync</span>
+          </div>
+          <span id="pipelineSourceTag" style="font-weight:750;background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:4px;">● Multi-Source Live Feed</span>
+        </div>
+
+        <!-- Employer Dossier Metric Banner -->
+        <div class="dossier-stat-grid" id="dossierStatGrid">
+          <div class="dossier-stat-card">
+            <span class="stat-label">INDUSTRY / SECTOR</span>
+            <strong id="statIndustry" class="stat-value">Digital Services & Enterprise Software</strong>
+          </div>
+          <div class="dossier-stat-card">
+            <span class="stat-label">HEADQUARTERS</span>
+            <strong id="statHQ" class="stat-value">Bengaluru, India</strong>
+          </div>
+          <div class="dossier-stat-card">
+            <span class="stat-label">SCALE / WORKFORCE</span>
+            <strong id="statEmployees" class="stat-value">Enterprise Scale</strong>
+          </div>
+          <div class="dossier-stat-card">
+            <span class="stat-label">DATA TELEMETRY</span>
+            <strong id="statRating" class="stat-value">Role Benchmark Calibrated</strong>
+          </div>
+        </div>
+
+        <!-- Role Filter Strip -->
+        <div class="role-filter-strip">
+          <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:240px;">
+            <input type="text" id="roleSearchInput" class="field-input" placeholder="Filter positions by title, keyword, or skill (e.g. Java, Cloud, React)..." style="height:38px;" />
+          </div>
+          <div class="role-exp-pills" id="roleExpFilters">
+            <button class="role-exp-btn active" data-exp="all">All Roles</button>
+            <button class="role-exp-btn" data-exp="0-2">0-2 YOE</button>
+            <button class="role-exp-btn" data-exp="2-5">2-5 YOE</button>
+            <button class="role-exp-btn" data-exp="5-8">5-8 YOE</button>
+            <button class="role-exp-btn" data-exp="8+">8+ YOE</button>
+          </div>
+        </div>
+
+        <!-- Native Opportunities Grid -->
+        <div id="nativeJobsList" class="native-jobs-grid">
+          <!-- Rendered dynamically by company-intel.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 2: COMPENSATION DISTRIBUTION BENCHMARK                     -->
+    <!-- ============================================================== -->
+    <section class="tab-panel" id="panel-charts">
+      <div class="embed-card">
+        <div class="embed-head">
+          <div>
+            <h2 id="chartTitle">Compensation Distribution & Seniority Curves</h2>
+            <p>Verified market percentile breakdown, fixed base, performance bonuses, and equity compensation by level.</p>
+          </div>
+          <span class="source-badge">● APPLYRA BENCHMARK ENGINE</span>
+        </div>
+
+        <!-- Seniority Level Switcher Strip -->
+        <div class="chart-level-switcher" id="chartLevelSwitcher">
+          <!-- Dynamically populated by company-intel.js -->
+        </div>
+
+        <!-- Selected Level Visual Percentile Breakdown Box -->
+        <div class="benchmark-visual-box" id="benchmarkVisualBox">
+          <!-- Rendered dynamically by company-intel.js -->
+        </div>
+
+        <!-- Full Seniority Table -->
+        <div class="ladder-table-wrapper" style="margin-top:22px;">
+          <h3 style="font-size:14px;font-weight:750;margin:0 0 10px;color:var(--text-primary);">Complete Compensation Ladder & Percentiles</h3>
+          <table class="ladder-table" id="compensationLadderTable">
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>Experience</th>
+                <th>25th %ile (P25)</th>
+                <th>Median CTC</th>
+                <th>75th %ile (P75)</th>
+                <th>90th %ile (P90)</th>
+                <th>Base / Bonus / Equity</th>
+              </tr>
+            </thead>
+            <tbody id="compensationLadderBody">
+              <!-- Dynamically populated by company-intel.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 3: CAREER PROGRESSION & LEVELING LADDER                    -->
+    <!-- ============================================================== -->
+    <section class="tab-panel" id="panel-leveling">
+      <div class="embed-card">
+        <div class="embed-head">
+          <div>
+            <h2 id="levelingTitle">Leveling Hierarchy & Cross-Company Title Equivalency</h2>
+            <p>Standardized career progression mapping between peer engineering and product organizations.</p>
+          </div>
+          <span class="source-badge">● APPLYRA LEVELING MATRIX</span>
+        </div>
+
+        <!-- Compare Selector Strip -->
+        <div class="compare-select-strip">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="field-label">Employer A:</span>
+            <input type="text" id="compareInputA" list="companiesList" class="field-input" style="min-width:160px;height:38px;" value="" />
+          </div>
+          <span class="vs-badge">VS</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="field-label">Employer B:</span>
+            <input type="text" id="compareInputB" list="companiesList" class="field-input" style="min-width:160px;height:38px;" value="TCS" />
+          </div>
+          <button id="updateCompareBtn" class="hdr-btn primary" style="padding:8px 16px;font-size:12px;">Compare Leveling</button>
+        </div>
+
+        <!-- Dynamic Side-by-Side Comparison Grid -->
+        <div id="sideBySideLevelingGrid" class="leveling-compare-container">
+          <!-- Rendered dynamically by company-intel.js -->
+        </div>
+
+        <!-- Universal Cross-Industry Leveling Matrix -->
+        <div class="ladder-table-wrapper" style="margin-top:24px;">
+          <h3 style="font-size:14px;font-weight:750;margin:0 0 10px;color:var(--text-primary);">Universal Industry Leveling Matrix</h3>
+          <table class="ladder-table">
+            <thead>
+              <tr>
+                <th>Level Band</th>
+                <th>Experience</th>
+                <th>IT Services Equivalent</th>
+                <th>India Unicorn Equivalent</th>
+                <th>Global Big Tech Equivalent</th>
+                <th>Typical Market Range</th>
+                <th>Core Scope & Impact</th>
+              </tr>
+            </thead>
+            <tbody id="universalMatrixBody">
+              <!-- Dynamically populated from LEVELING_MATRIX -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 4: YOUR LIVE APPLYRA PIPELINE                              -->
+    <!-- ============================================================== -->
+    <section class="tab-panel" id="panel-pipeline">
+      <div class="embed-card">
+        <div class="embed-head">
+          <div>
+            <h2>Your Tracked Opportunities & Applications</h2>
+            <p>Automatically matched with your local storage database, extracted jobs, and active tracker.</p>
+          </div>
+          <span class="source-badge" style="background:#eff6ff;color:#1e40af;border-color:#bfdbfe;">● APPLYRA STORAGE SYNC</span>
+        </div>
+
+        <div class="applyra-live-box">
+          <div>
+            <strong style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-primary);">
+              <span class="live-pill">WORKSPACE STATUS</span>
+              <span id="liveStatusText">Scanning your pipeline for active opportunities…</span>
+            </strong>
+            <p id="liveDetailText" style="margin:4px 0 0;font-size:12px;color:var(--text-secondary);">
+              Checking saved jobs and tracked applications.
+            </p>
+          </div>
+          <div id="liveActionArea"></div>
+        </div>
+
+        <div id="matchedJobsContainer">
+          <div style="font-size:12px;color:var(--text-secondary);padding:12px 0;">No active opportunities found for this company in your local workspace yet.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 5: OFFER SIMULATOR & BENCHMARK                             -->
+    <!-- ============================================================== -->
+    <section class="tab-panel" id="panel-calculator">
+      <div class="embed-card">
+        <div class="embed-head">
+          <div>
+            <h2>Offer Package Simulator & Counter Strategy</h2>
+            <p>Break down fixed base, variable bonus, and equity to calculate annual Total Compensation (TC) and counter targets.</p>
+          </div>
+          <span class="source-badge" style="background:#fefce8;color:#854d0e;border-color:#fef08a;">● OFFER CALIBRATION</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;">
+          <div>
+            <label class="field-label" style="display:block;margin-bottom:6px;">Annual Fixed Base</label>
+            <input type="number" id="calcBase" value="35" class="field-input" placeholder="e.g. 35 LPA or 180 ($k)" />
+          </div>
+          <div>
+            <label class="field-label" style="display:block;margin-bottom:6px;">Annual Variable Bonus</label>
+            <input type="number" id="calcBonus" value="5" class="field-input" placeholder="e.g. 5 LPA or 25 ($k)" />
+          </div>
+          <div>
+            <label class="field-label" style="display:block;margin-bottom:6px;">Annual Equity / Stock</label>
+            <input type="number" id="calcEquity" value="15" class="field-input" placeholder="e.g. 15 LPA or 70 ($k)" />
+          </div>
+        </div>
+
+        <div style="background:var(--bg-subtle);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:18px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div>
+              <span class="field-label">CALCULATED TOTAL COMPENSATION</span>
+              <div id="displayTotalTc" style="font-size:26px;font-weight:900;color:var(--accent-emerald);margin-top:2px;">55.0 Units</div>
+            </div>
+            <span id="displayVerdictBadge" style="padding:6px 14px;border-radius:999px;font-size:12px;font-weight:800;background:var(--primary);color:#fff;">Solid Competitive Offer</span>
+          </div>
+          <div id="displayCounterTip" style="font-size:12px;color:var(--text-secondary);line-height:1.55;">
+            Target counter: <strong>63.3 Units (+15%)</strong>. Base: 64% · Bonus: 9% · Equity: 27%.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- PIPELINE SETTINGS MODAL (OPTIONS 1, 2, AND 3 CONFIGURATION)   -->
+    <!-- ============================================================== -->
+    <div id="pipelineSettingsModal" class="pipeline-modal-backdrop" style="display:none;">
+      <div class="pipeline-modal-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-subtle);padding-bottom:14px;margin-bottom:16px;">
+          <div>
+            <h2 style="margin:0;font-size:17px;font-weight:800;color:var(--text-primary);">Data Pipeline Architecture & Sources</h2>
+            <p style="margin:4px 0 0;font-size:12px;color:var(--text-secondary);">Manage live data feeds, workspace extractor database, and cloud synchronization.</p>
+          </div>
+          <button id="closePipelineModalBtn" class="hdr-btn" style="padding:4px 10px;font-size:14px;font-weight:750;">✕</button>
+        </div>
+
+        <!-- Option 1: Live Market Intelligence Feed -->
+        <div class="source-config-block">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <strong style="font-size:13px;color:var(--text-primary);">Option 1: Applyra Real-Time Market Intelligence Engine</strong>
+            <span class="source-badge" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0;">● LIVE & CONNECTED</span>
+          </div>
+          <p style="font-size:11.5px;color:var(--text-secondary);margin:0 0 10px;">
+            Aggregates live verified global tech roles, market demand, and compensation curves directly into your Applyra workspace.
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div>
+              <span class="field-label" style="font-size:10px;">Market API Client ID (Optional):</span>
+              <input type="text" id="adzunaAppIdInput" class="field-input" placeholder="e.g. client_id" style="height:34px;font-size:11.5px;" />
+            </div>
+            <div>
+              <span class="field-label" style="font-size:10px;">Market API Key (Optional):</span>
+              <input type="password" id="adzunaApiKeyInput" class="field-input" placeholder="e.g. key_secret" style="height:34px;font-size:11.5px;" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Option 2: Applyra Workspace Extractor Database -->
+        <div class="source-config-block">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <strong style="font-size:13px;color:var(--text-primary);">Option 2: Applyra Extractor Database (Local Workspace)</strong>
+            <span id="workspaceJobsCountBadge" class="source-badge" style="background:#eff6ff;color:#1e40af;border-color:#bfdbfe;">● 0 JOBS EXTRACTED</span>
+          </div>
+          <p style="font-size:11.5px;color:var(--text-secondary);margin:0;">
+            Automatically pulls jobs captured in your local workspace. Real compensation ranges are extracted to calculate empirical percentiles and calibration curves.
+          </p>
+        </div>
+
+        <!-- Option 3: Applyra Cloud Sync -->
+        <div class="source-config-block">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <strong style="font-size:13px;color:var(--text-primary);">Option 3: Applyra Community Cloud Intelligence</strong>
+            <span class="source-badge" style="background:#f5f3ff;color:#6b21a8;border-color:#ddd6fe;">● CLOUD SYNC READY</span>
+          </div>
+          <p style="font-size:11.5px;color:var(--text-secondary);margin:0 0 10px;">
+            Synchronizes verified community compensation benchmarks, interview insights, and leveling progression data.
+          </p>
+          <div>
+            <span class="field-label" style="font-size:10px;">Community Sync Endpoint (Optional):</span>
+            <input type="text" id="supabaseUrlInput" class="field-input" placeholder="https://your-cloud-endpoint" style="height:34px;font-size:11.5px;" />
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:16px;">
+          <button id="savePipelineConfigBtn" class="hdr-btn primary" style="padding:8px 18px;font-size:12px;">Save & Test Pipeline</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="company-intel.js"></script>
+  <script src="theme-controls.js"></script>
+  </body>
+</html>

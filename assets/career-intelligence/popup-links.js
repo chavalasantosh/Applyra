@@ -1,0 +1,1 @@
+document.getElementById('resume-intelligence')?.addEventListener('click',()=>chrome.tabs.create({url:chrome.runtime.getURL('index.html#Resume')}));document.getElementById('scheduled-opportunities')?.addEventListener('click',()=>chrome.tabs.create({url:chrome.runtime.getURL('index.html#Scheduled%20scans')}));

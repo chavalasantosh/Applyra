@@ -1,0 +1,141 @@
+{
+  "name": "Applyra original navigation icon set",
+  "version": "1.0.0",
+  "icon_count": 26,
+  "authorship": "New original source-drawn vector geometry. Generic UI metaphors; no third-party icon package or copied brand assets.",
+  "format": "24x24 SVG, stroke=currentColor, stroke-width=1.8, transparent background; convenience PNGs at 24px/48px/96px",
+  "suggested_css": ".applyra-icon { width:20px; height:20px; color:#40516b } .applyra-icon.is-active { color:#2860ed }",
+  "note": "A graphical design alone does not imply a feature is implemented. Icons can be connected only to features actually present. Brand novelty/trademark clearance has not been legally certified.",
+  "icons": [
+    {
+      "name": "dashboard",
+      "label": "Dashboard",
+      "path": "svg/dashboard.svg"
+    },
+    {
+      "name": "job-search",
+      "label": "Job search",
+      "path": "svg/job-search.svg"
+    },
+    {
+      "name": "jobs",
+      "label": "Jobs",
+      "path": "svg/jobs.svg"
+    },
+    {
+      "name": "auto-apply",
+      "label": "Auto apply",
+      "path": "svg/auto-apply.svg"
+    },
+    {
+      "name": "application-tracker",
+      "label": "Application tracker",
+      "path": "svg/application-tracker.svg"
+    },
+    {
+      "name": "history",
+      "label": "History",
+      "path": "svg/history.svg"
+    },
+    {
+      "name": "activity",
+      "label": "Activity",
+      "path": "svg/activity.svg"
+    },
+    {
+      "name": "analytics",
+      "label": "Analytics",
+      "path": "svg/analytics.svg"
+    },
+    {
+      "name": "resume",
+      "label": "Resume",
+      "path": "svg/resume.svg"
+    },
+    {
+      "name": "cover-letter",
+      "label": "Cover letter",
+      "path": "svg/cover-letter.svg"
+    },
+    {
+      "name": "profile",
+      "label": "Profile",
+      "path": "svg/profile.svg"
+    },
+    {
+      "name": "ai-assistant",
+      "label": "AI assistant",
+      "path": "svg/ai-assistant.svg"
+    },
+    {
+      "name": "saved-jobs",
+      "label": "Saved jobs",
+      "path": "svg/saved-jobs.svg"
+    },
+    {
+      "name": "downloads",
+      "label": "Downloads",
+      "path": "svg/downloads.svg"
+    },
+    {
+      "name": "match-score",
+      "label": "Match score",
+      "path": "svg/match-score.svg"
+    },
+    {
+      "name": "tasks",
+      "label": "Tasks",
+      "path": "svg/tasks.svg"
+    },
+    {
+      "name": "integrations",
+      "label": "Integrations",
+      "path": "svg/integrations.svg"
+    },
+    {
+      "name": "sync",
+      "label": "Sync",
+      "path": "svg/sync.svg"
+    },
+    {
+      "name": "security",
+      "label": "Security",
+      "path": "svg/security.svg"
+    },
+    {
+      "name": "notifications",
+      "label": "Notifications",
+      "path": "svg/notifications.svg"
+    },
+    {
+      "name": "interviews",
+      "label": "Interviews",
+      "path": "svg/interviews.svg"
+    },
+    {
+      "name": "filters",
+      "label": "Filters",
+      "path": "svg/filters.svg"
+    },
+    {
+      "name": "profile-import",
+      "label": "Profile import",
+      "path": "svg/profile-import.svg"
+    },
+    {
+      "name": "settings",
+      "label": "Settings",
+      "path": "svg/settings.svg"
+    },
+    {
+      "name": "help",
+      "label": "Help",
+      "path": "svg/help.svg"
+    },
+    {
+      "name": "sidebar-toggle",
+      "label": "Sidebar toggle",
+      "path": "svg/sidebar-toggle.svg"
+    }
+  ]
+}

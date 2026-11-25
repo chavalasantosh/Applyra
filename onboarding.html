@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Welcome to Applyra</title>
+  <link rel="stylesheet" href="onboarding.css" />
+  <link rel="stylesheet" href="theme.css" />
+  </head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <img src="assets/brand/icon128.png" alt="" class="mark" />
+      <div><div class="eyebrow">APPLYRA · FIRST RUN</div><h1>Set up your career workspace</h1><p>Each step checks real extension state. Nothing below is marked ready unless Applyra can verify it.</p></div>
+      <div style="margin-left:auto;"><button type="button" id="onboardingBackBtn" class="button" style="display:inline-flex;align-items:center;gap:6px;font-weight:700;padding:8px 14px;border-radius:8px;cursor:pointer;">← Back</button></div>
+    </header>
+
+    <section class="status-card">
+      <div><strong id="overall">Checking setup…</strong><span id="overallDetail">Reading local state</span></div>
+      <button id="refresh" type="button">Refresh status</button>
+    </section>
+
+    <section class="steps">
+      <article class="step" id="step-account"><span class="num">1</span><div><h2>Secure Applyra account</h2><p id="accountText">Checking authentication…</p><div class="actions"><button id="accountBtn" class="primary">Open account</button></div></div><b class="state" id="accountState">Checking</b></article>
+      <article class="step" id="step-naukri"><span class="num">2</span><div><h2>Connect Naukri browser session</h2><p id="naukriText">Checking Naukri…</p><div class="actions"><button id="naukriBtn">Open Naukri</button><button id="naukriCheck">Check connection</button></div></div><b class="state" id="naukriState">Checking</b></article>
+      <article class="step" id="step-profile"><span class="num">3</span><div><h2>Review your profile</h2><p id="profileText">Checking saved profile data…</p><div class="actions"><button id="profileBtn">Open profile workspace</button></div></div><b class="state" id="profileState">Checking</b></article>
+      <article class="step" id="step-vault"><span class="num">4</span><div><h2>Review Answer Vault</h2><p id="vaultText">Checking approved screening facts…</p><div class="actions"><button id="vaultBtn">Open Answer Vault</button></div></div><b class="state" id="vaultState">Checking</b></article>
+      <article class="step" id="step-cloud"><span class="num">5</span><div><h2>Production cloud foundation</h2><p id="cloudText">Cloud data is optional in this beta and never assumed to be configured.</p><div class="actions"><button id="cloudBtn">Open Account & Data</button></div></div><b class="state" id="cloudState">Checking</b></article>
+    </section>
+
+    <section class="boundary"><strong>Portal security boundary</strong><p>Applyra never asks for your Naukri password, OTP, CAPTCHA answer, copied cookie, or bearer token. Sign in to job portals only on their own sites.</p></section>
+    <div class="footer-actions"><button id="workspaceBtn" class="primary">Open Applyra workspace</button><button id="automationBtn">Open Automation Center</button></div>
+  </main>
+  <script src="onboarding.js"></script>
+  <script src="theme-controls.js"></script>
+  </body>
+</html>

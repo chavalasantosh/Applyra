@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>Applyra Developer Test Lab</title>
+  <link rel="stylesheet" href="test-lab.css" />
+  <link rel="stylesheet" href="theme.css" />
+  </head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div><div class="eyebrow">APPLYRA · DEVELOPER TEST LAB</div><h1>Reliability Test Lab</h1><p>Isolated synthetic fixtures for testing Applyra core logic. This page does not add jobs to your queue, does not call job portals, and does not submit applications.</p></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <button type="button" id="testLabBackBtn" class="button secondary" style="display:inline-flex;align-items:center;gap:6px;font-weight:700;cursor:pointer;">← Back</button>
+        <button id="backBtn" class="button">Back to Automation Center</button>
+      </div>
+    </header>
+
+    <section class="warning"><strong>TEST-ONLY BOUNDARY:</strong> every job, company, candidate fact and question on this page is synthetic. A passing test proves only the local module behavior shown here; it is not evidence that a live portal is supported.</section>
+
+    <section class="card">
+      <div class="head"><div><h2>Reliability self-test</h2><p>Runs deterministic checks against the same core modules shipped in this extension.</p></div><button id="runAllBtn" class="button primary">Run all checks</button></div>
+      <div id="summary" class="summary">Not run yet.</div>
+      <div id="results" class="results"></div>
+    </section>
+
+    <section class="card">
+      <div class="head"><div><h2>Portal adapter detector</h2><p>Tests provider detection and declared capabilities only. It does not contact the URL.</p></div></div>
+      <div class="form-row"><label>HTTPS job URL<input id="portalUrl" type="url" value="https://www.linkedin.com/jobs/view/1234567890" /></label><button id="detectBtn" class="button">Detect</button></div>
+      <pre id="portalOutput">—</pre>
+    </section>
+
+    <section class="card">
+      <div class="head"><div><h2>Screening-question resolver</h2><p>Uses a synthetic Candidate Memory defined only in this test page.</p></div></div>
+      <div class="form-grid"><label>Question<input id="question" value="How many years of experience do you have with LangGraph?" /></label><label>Options (comma separated)<input id="options" value="1, 2, 3, 4" /></label></div>
+      <button id="resolveBtn" class="button">Resolve synthetic question</button>
+      <pre id="questionOutput">—</pre>
+    </section>
+
+    <section class="card">
+      <div class="head"><div><h2>Naukri extractor fixture</h2><p>The visible card below is synthetic markup shaped like a Naukri result. The real extractor parses it in-memory; nothing is persisted.</p></div><button id="extractBtn" class="button">Run extractor</button></div>
+      <article class="srp-jobtuple-wrapper synthetic-fixture" data-job-id="1234567890">
+        <a class="title" href="https://www.naukri.com/job-listings-synthetic-genai-engineer-example-1234567890" title="Synthetic GenAI Engineer">Synthetic GenAI Engineer</a>
+        <div class="comp-name">Example Labs</div>
+        <div class="locWdth">Hyderabad</div>
+        <div class="expwdth">3 - 5 years</div>
+        <div class="sal">20 - 30 LPA</div>
+        <div class="job-desc">Synthetic fixture for deterministic extractor validation only.</div>
+        <div class="job-post-day">Today</div>
+        <ul><li class="tag-li">Python</li><li class="tag-li">LLM</li><li class="tag-li">RAG</li></ul>
+      </article>
+      <pre id="extractOutput">—</pre>
+    </section>
+  </main>
+
+  <script src="test-lab.js"></script>
+  <script src="theme-controls.js"></script>
+  </body>
+</html>

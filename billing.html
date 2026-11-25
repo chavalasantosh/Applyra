@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Applyra Billing</title>
+  <link rel="stylesheet" href="billing.css" />
+  <link rel="stylesheet" href="theme.css" />
+  </head>
+<body>
+  <main class="shell">
+    <header class="top">
+      <div><div class="brand"><img src="assets/brand/icon48.png" alt="" />APPLYRA · BILLING</div><h1>Plan & billing</h1><p>Choose a configured payment provider. Razorpay retains subscription billing. Additional provider checkouts are one-time purchases and require payment verification and access provisioning.</p></div>
+      <div class="actions"><button type="button" class="button secondary back-nav-btn" id="billingBackBtn" style="display:inline-flex;align-items:center;gap:6px;font-weight:700;cursor:pointer;">← Back</button><a class="button" href="auth.html?return=billing.html">Account</a><button id="refreshBtn" type="button">Refresh</button></div>
+    </header>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    <section class="grid">
+      <article class="card"><h2>Account</h2><div id="accountBox" class="account"></div></article>
+      <article class="card"><h2>Payment provider</h2><div id="providerBox"></div></article>
+    </section>
+
+    <article class="card payment-order">
+      <h2>Payment priority</h2>
+      <div class="priority-flow" aria-label="Payment priority">
+        <div class="priority-step primary-step"><strong>1 · Card</strong><span>Credit/debit card first. Frictionless 3DS when the issuer allows it; challenge only when required.</span></div>
+        <div class="priority-step"><strong>2 · UPI fallback</strong><span>UPI app / ID / QR where the selected provider and customer region support it.</span></div>
+        <div class="priority-step"><strong>3 · Other methods</strong><span>Other provider-enabled methods remain a last fallback.</span></div>
+      </div>
+    </article>
+
+    <article id="checkoutDetail" class="card" hidden></article><article id="checkoutVerification" class="card" hidden></article>
+    <article class="card"><h2>Current subscription</h2><div id="subscriptionBox" class="subscription"></div></article>
+    <article class="card"><h2>Available plans</h2><p class="muted">Only plans activated by Applyra Admin are shown.</p><div id="plans" class="plans"></div></article>
+
+    <div class="security"><strong>Payment security:</strong> Applyra does not collect or store raw card numbers, CVV, UPI PIN, bank passwords or gateway secret keys. Hosted providers collect payment details on their own checkout surfaces; Braintree collects card details in provider-hosted fields on the server checkout page. A configured adapter is not considered live-tested until its sandbox transaction and webhook lifecycle have passed.</div>
+  </main>
+  <script src="billing.js"></script>
+  <script src="theme-controls.js"></script>
+  </body>
+</html>

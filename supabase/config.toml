@@ -1,0 +1,24 @@
+# Applyra Supabase Edge Function configuration.
+# The billing API requires a valid Supabase JWT (default verification stays enabled).
+# Razorpay webhooks are external signed requests, so gateway JWT verification must be disabled
+# and the function verifies x-razorpay-signature using RAZORPAY_WEBHOOK_SECRET.
+
+[functions.razorpay-webhook]
+verify_jwt = false
+
+# Public landing page used after Supabase has already verified a signup email.
+# No privileged action is performed here, so gateway JWT verification is disabled.
+[functions.auth-confirmed]
+verify_jwt = false
+
+# Public Razorpay checkout launcher. It does not trust browser identity directly; it verifies
+# a short-lived HMAC-signed checkout token from billing-api and verifies Razorpay's payment signature.
+[functions.checkout-launcher]
+verify_jwt = false
+
+# Signed, short-lived tokens protect these public checkout pages.
+[functions.commerce-checkout]
+verify_jwt = false
+
+[functions.payment-return]
+verify_jwt = false

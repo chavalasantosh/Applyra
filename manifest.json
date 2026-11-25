@@ -1,0 +1,79 @@
+{
+  "manifest_version": 3,
+  "name": "Applyra",
+  "description": "Applyra combines career profiles, resume/ATS tools, job matching, application tracking, interview prep, recruiter outreach, analytics, alerts and Naukri workflows.",
+  "version": "2.9.2",
+  "action": {
+    "default_title": "Open Applyra",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/brand/icon16.png",
+      "32": "assets/brand/icon32.png"
+    }
+  },
+  "background": {
+    "service_worker": "background-scheduled.js"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "activeTab",
+    "tabs",
+    "scripting",
+    "alarms",
+    "identity",
+    "downloads",
+    "notifications",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "https://*.naukri.com/*",
+    "https://www.naukri.com/*",
+    "https://remotive.com/*",
+    "https://www.arbeitnow.com/*",
+    "https://api.adzuna.com/*",
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.naukri.com/*",
+        "https://*.naukri.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "version_name": "2.9.2-integrated-workspace",
+  "optional_host_permissions": [
+    "https://*.linkedin.com/*",
+    "https://linkedin.com/*",
+    "https://*.indeed.co.in/*",
+    "https://in.indeed.com/*",
+    "https://*.foundit.in/*",
+    "https://*.shine.com/*",
+    "https://*.timesjobs.com/*",
+    "https://*.instahyre.com/*",
+    "https://*.wellfound.com/*",
+    "https://foorilla.com/*",
+    "https://www.foorilla.com/*",
+    "https://hiring.cafe/*",
+    "https://www.hiring.cafe/*",
+    "https://hiringcafe.com/*",
+    "https://www.hiringcafe.com/*",
+    "https://*.supabase.co/*"
+  ],
+  "icons": {
+    "16": "assets/brand/icon16.png",
+    "32": "assets/brand/icon32.png",
+    "48": "assets/brand/icon48.png",
+    "128": "assets/brand/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  }
+}

@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>Applyra Automation Center</title>
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="apply-engine.css" />
+  <link rel="stylesheet" href="download-toast.css" />
+</head>
+<body>
+  <div id="fileProtocolWarning" style="display:none;background:#fef2f2;border:2px solid #ef4444;color:#991b1b;padding:16px 20px;border-radius:12px;margin:20px auto;max-width:1200px;font-size:14px;line-height:1.6;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);">
+    <div style="display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;color:#b91c1c;margin-bottom:8px;">
+      <span>⚠️</span><span>Page Loaded via file:/// (Direct File System)</span>
+    </div>
+    <div>
+      You opened this file directly from your disk (<code>file:///...</code>). Chrome and Brave security strictly isolate browser extensions: background automation, Naukri session detection, and local storage <strong>only work when accessed via the extension URL</strong>.
+    </div>
+    <div style="margin-top:12px;font-weight:700;">
+      👉 How to run Applyra correctly:
+    </div>
+    <ol style="margin:6px 0 10px 20px;padding:0;">
+      <li>Open Brave or Chrome.</li>
+      <li>Click the <strong>Applyra extension icon</strong> in your browser toolbar (puzzle piece icon 🧩), then click <strong>"Automation Center"</strong>.</li>
+      <li>Or paste this exact URL into your browser address bar: <code id="extensionUrlHint" style="background:#fee2e2;padding:2px 6px;border-radius:4px;font-weight:700;">chrome-extension://lcbclfoghfohehliggmjnognjfipnpif/apply-engine.html</code></li>
+    </ol>
+  </div>
+  <div class="page-shell">
+    <header class="hero">
+      <div>
+        <div class="eyebrow">APPLYRA · AUTOMATION WORKSPACE</div>
+        <div class="title-row"><h1>Automation Center</h1><span class="alpha-badge">v2.9.2</span></div>
+        <p>Apply Engine, production-hardened Naukri Auto Apply, Profile Boost, reusable answers, local business entitlements, usage accounting, privacy export, live activity and recovery controls in one isolated workspace.</p>
+      </div>
+      <div class="hero-actions">
+        <button type="button" id="toolkitBridgeBadge" class="button secondary" style="display:inline-flex;align-items:center;gap:6px;font-weight:700;cursor:pointer;" title="Click to test/refresh connection with Python Career Toolkit">⚪ Toolkit Offline</button>
+        <a href="index.html#Extractor" class="button secondary" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-weight:700;">🔍 Extractor &amp; Runs</a>
+        <a href="career-suite.html" target="_top" class="button secondary" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">Career Suite</a>
+        <a href="company-intel.html" target="_top" class="button secondary" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">💰 Comp Radar</a>
+        <button id="refreshBtn" class="button secondary">Refresh</button>
+        <button id="checkNaukriBtn" class="button secondary">Check Naukri session</button>
+      </div>
+    </header>
+
+    <section id="notice" class="notice">
+      <strong>Safety baseline:</strong> Applyra does not ask for portal passwords, OTPs or CAPTCHA answers and does not store Naukri bearer tokens or copied cookies. Naukri Auto Apply uses the currently signed-in browser session and Naukri's native application flow. Known recruiter questions can optionally use Candidate Memory + Answer Vault. Skill/role experience, relocation-city, joining-date, employer-history and work-mode questions can be resolved from approved facts; unknown questions, OTPs, CAPTCHAs and security checks always pause for you.
+    </section>
+
+    <section class="metrics" aria-label="Automation Center metrics">
+      <article><span>Ready queue</span><strong id="metricQueue">0</strong><small>discovered jobs</small></article>
+      <article><span>Active sessions</span><strong id="metricActive">0</strong><small>not completed</small></article>
+      <article><span>Needs attention</span><strong id="metricAttention">0</strong><small>watchdog</small></article>
+      <article><span>Answer Vault</span><strong id="metricVault">0%</strong><small>core fields complete</small></article>
+      <article><span>Auto Apply</span><strong id="metricAutoApply">0</strong><small>confirmed today</small></article>
+      <article><span>Profile Boost</span><strong id="metricBoost">0</strong><small>confirmed boosts</small></article>
+    </section>
+
+    <nav class="tabs" aria-label="Automation Center sections">
+      <button class="tab active" data-tab="queue">Application Queue</button>
+      <button class="tab" data-tab="autoapply">Naukri Auto Apply</button>
+      <button id="sessionsTab" class="tab" data-tab="sessions">Live Sessions</button>
+      <button class="tab" data-tab="boost">Profile Boost</button>
+      <button class="tab" data-tab="answers">Answer Vault</button>
+      <button class="tab" data-tab="activity">Activity</button>
+      <button class="tab" data-tab="career">Career Suite</button>
+      <button class="tab" data-tab="business">Account & Data</button>
+      <button class="tab" data-tab="team">Team & Candidates</button>
+      <button class="tab" data-tab="portals">Multi-Portal</button>
+      <button class="tab" data-tab="safety">Safety & Limits</button>
+    </nav>
+
+    <main>
+      <section class="panel tab-panel active" data-panel="queue">
+        <div class="panel-head">
+          <div><h2>Application Queue</h2><p>Opportunities verified by Applyra. Starting a session initializes the persistent application workflow within your Applyra workspace.</p></div>
+          <div class="toolbar"><input id="queueSearch" type="search" placeholder="Search role or company" /><select id="queueFilter"><option value="ready">Ready</option><option value="saved">Saved</option><option value="all">All</option></select></div>
+        </div>
+        <div id="queueEmpty" class="empty">No jobs available yet. Extract or discover jobs first.</div>
+        <div id="queueList" class="job-list"></div>
+      </section>
+
+
+      <section class="panel tab-panel" data-panel="autoapply">
+        <div class="panel-head">
+          <div>
+            <h2>Naukri Search Auto Apply</h2>
+            <p>Search Naukri by role/skills, experience and location, then run Auto Apply directly on that native Search Results tab. Extraction stays in the Extractor page and is not duplicated here.</p>
+          </div>
+        </div>
+        <div class="form-grid compact">
+          <label>Role / skills / keywords<input id="naukriSearchKeywords" placeholder="e.g. NLP, GenAI Engineer, RAG" /></label>
+          <label>Experience (years)<input id="naukriSearchExperience" type="number" min="0" max="30" step="1" placeholder="Any" /></label>
+          <label>Location<input id="naukriSearchLocation" placeholder="e.g. Hyderabad, Bengaluru, Remote" /></label>
+          <div class="actions" style="display:flex;gap:8px;align-items:flex-end;">
+            <button type="button" id="toolkitKeywordsBtn" class="button secondary" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;" title="Suggest keywords from your resume & Career Toolkit">⚡ Suggest keywords</button>
+            <button id="naukriSearchApplyBtn" class="button primary">Search + auto apply</button>
+          </div>
+        </div>
+        <p id="naukriSearchStatus" class="muted">This uses Naukri Search Results directly for Auto Apply. It does not extract jobs; use Extractor for extraction.</p>
+
+        <div class="panel-head" style="margin-top:28px;padding-top:22px;border-top:1px solid #e7ebf3">
+          <div>
+            <h2>Recommended Jobs Auto Apply</h2>
+            <p>This workflow only operates on Naukri's native Recommended Jobs page. The include/exclude fields below are filters for those recommendations; they are not Naukri search terms.</p>
+          </div>
+          <div class="hero-actions">
+            <button type="button" id="syncToolkitBtn" class="button secondary" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;" title="Sync jobs, applications and interviews to Career Toolkit">📋 Sync to Toolkit</button>
+            <button id="autoPreviewBtn" class="button secondary">Preview recommended batch</button>
+            <button id="autoRunBtn" class="button primary">Start recommended run</button>
+          </div>
+        </div>
+
+        <div class="boost-status-grid">
+          <article><span>Status</span><strong id="autoStatus">Idle</strong><small id="autoError">No errors</small></article>
+          <article><span>Today</span><strong id="autoToday">0</strong><small>confirmed applied</small></article>
+          <article><span>Total</span><strong id="autoTotal">0</strong><small>confirmed applied</small></article>
+          <article><span>Last batch</span><strong id="autoLastBatch">0</strong><small id="autoLastOutcome">No run yet</small></article>
+        </div>
+        <div id="autoEntitlementNote" class="entitlement-note">Business allowance loading…</div>
+
+        <div class="form-grid compact">
+          <label>Jobs per batch
+            <input id="autoBatchSize" type="number" min="1" max="5" value="1" />
+          </label>
+          <label>Recommended include filter
+            <input id="autoInclude" placeholder="optional: NLP, GenAI, RAG" />
+          </label>
+          <label>Recommended exclude filter
+            <input id="autoExclude" placeholder="optional: sales, support, PHP" />
+          </label>
+          <label class="toggle"><input id="autoVisibleTab" type="checkbox" checked /><span><strong>Keep Naukri tab visible</strong><small>Recommended while validating the live Naukri workflow.</small></span></label>
+          <label class="toggle"><input id="autoAnswerVault" type="checkbox" checked /><span><strong>Answer known follow-up questions</strong><small>Uses only high-confidence Answer Vault matches. New manual recruiter answers are learned for future applications when remembering is enabled; unknown questions pause.</small></span></label>
+          <label class="toggle"><input id="autoRememberManual" type="checkbox" checked /><span><strong>Remember answers I enter manually</strong><small>Stores non-security recruiter Q&amp;A in this candidate's Answer Vault for future applications. Turn this off any time. OTPs, passwords, CAPTCHAs and payment/security codes are never stored.</small></span></label>
+          <label class="toggle"><input id="autoSkipKnown" type="checkbox" checked /><span><strong>Skip jobs already known as applied</strong><small>Uses Applyra history plus confirmed Auto Apply job IDs.</small></span></label>
+          <label class="toggle"><input id="autoReusePreview" type="checkbox" checked /><span><strong>Reuse preview tab</strong><small>Avoids opening duplicate Naukri tabs when the preview is still valid.</small></span></label>
+          <label class="toggle"><input id="autoRedFlagGuard" type="checkbox" checked /><span><strong>🛡️ Red-Flag Guard (Career Toolkit)</strong><small>Automatically filter out commission-only traps, mandatory bond agreements, unpaid trials, and suspect job postings before applying.</small></span></label>
+        </div>
+
+        <div id="autoActiveRun" class="recovery-box run-box" hidden>
+          <div><strong id="autoRunState">No active run</strong><p id="autoRunProgress">Run details will appear here.</p></div>
+          <button id="autoStopBtn" class="button danger">Stop run</button>
+        </div>
+
+        <div class="subhead">
+          <div><h3>Previewed jobs</h3><p id="autoPreviewMeta">No fresh preview</p></div>
+        </div>
+        <div id="autoPreviewEmpty" class="empty">Preview a batch to review the jobs before submission.</div>
+        <div id="autoPreviewCandidates" class="job-list"></div>
+
+        <div class="subhead">
+          <div><h3>Last selected jobs</h3><p>These are the exact cards selected in the latest batch.</p></div>
+          <div class="hero-actions"><button id="autoCheckBtn" class="button secondary">Check current outcome</button><button id="autoOpenBtn" class="button secondary">Open Recommended Jobs</button></div>
+        </div>
+        <div id="autoCandidatesEmpty" class="empty">No Auto Apply batch has run yet.</div>
+        <div id="autoCandidates" class="job-list"></div>
+
+        <div class="architecture-note">
+          <strong>Reliability flow:</strong> optional preview, ready-page polling, duplicate skipping, single-run lock, native selection verification, 200/202/mixed-response classification, partial-success accounting, Answer Vault assist for recognized questions, idempotent history mirroring and recoverable run state.
+          <strong>Safety boundary:</strong> unknown questions and security challenges pause. CAPTCHA/OTP automation is not enabled.
+        </div>
+        <div class="danger-box"><strong>Credential rule:</strong> Applyra does not embed or save copied Naukri access tokens/cookies. The raw session values from network captures must never be shipped in the extension.</div>
+      </section>
+
+      <section id="sessionsPanel" class="panel tab-panel" data-panel="sessions">
+        <div class="panel-head"><div><h2>Live Sessions</h2><p>Application state is explicit: open → fill → wait for you when needed → verify → applied. The watchdog flags a session when there has been no progress for the configured interval.</p></div><button id="runWatchdogBtn" class="button secondary">Run watchdog now</button></div>
+        <div id="sessionsEmpty" class="empty">No application sessions yet.</div>
+        <div id="sessionsList" class="session-list"></div>
+      </section>
+
+      <section class="panel tab-panel" data-panel="boost">
+        <div class="panel-head">
+          <div><h2>Naukri Profile Boost</h2><p>Refresh profile freshness from the real signed-in Naukri profile. The verified reversible API method is the recommended default. The no-change UI method remains available for testing and now confirms the actual Naukri save request rather than assuming the same-page modal must close.</p></div>
+          <div class="hero-actions"><button id="openProfileBtn" class="button secondary">Open Naukri profile</button><button id="boostNowBtn" class="button primary">Boost now</button></div>
+        </div>
+
+        <div class="boost-status-grid">
+          <article><span>Status</span><strong id="boostStatus">Idle</strong><small id="boostError">No errors</small></article>
+          <article><span>Last confirmed</span><strong id="boostLastSuccess">Never</strong><small>successful profile refresh</small></article>
+          <article><span>Today</span><strong id="boostToday">0</strong><small>confirmed boosts</small></article>
+          <article><span>Next scheduled</span><strong id="boostNext">Off</strong><small id="boostScheduleLabel">schedule disabled</small></article>
+        </div>
+
+        <div id="boostRecovery" class="recovery-box" hidden>
+          <div><strong>Recovery required</strong><p>Applyra could not verify that a temporary Resume Headline update was restored. Automatic Profile Boost is paused until the original headline is recovered.</p></div>
+          <button id="recoverBoostBtn" class="button danger">Recover original headline</button>
+        </div>
+
+        <div class="form-grid compact boost-settings">
+          <label>Boost mode
+            <select id="bMode">
+              <option value="save-only">No-change Save — pencil → Save, no text edits</option>
+              <option value="assisted">Manual — open/check profile only</option>
+              <option value="reversible">Fallback — API micro-update + exact restore</option>
+            </select>
+          </label>
+          <label>Schedule
+            <select id="bCadence">
+              <option value="off">Off</option>
+              <option value="six-hourly">Every 6 hours</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </label>
+          <label class="toggle"><input id="bEnabled" type="checkbox" /><span><strong>Enable schedule</strong><small>Scheduled runs should use the verified reversible mode; UI Save is still available for testing.</small></span></label>
+          <label class="toggle"><input id="bAutoOpen" type="checkbox" /><span><strong>Open profile tab automatically</strong><small>Allows a background Naukri profile tab when none is open.</small></span></label>
+          <label class="toggle"><input id="bRunStartup" type="checkbox" /><span><strong>Run after Chrome starts</strong><small>Only when the schedule is enabled and the selected mode can run automatically.</small></span></label>
+        </div>
+        <div class="boost-actions"><button id="saveBoostBtn" class="button primary">Save Profile Boost settings</button></div>
+        <div class="danger-box"><strong>Important:</strong> UI Save does not edit the Resume headline value. The editor is a same-page modal, so Applyra no longer expects it to close. It confirms the matching Naukri profile-save request when possible. Verified reversible API mode remains the recommended counted/scheduled method and keeps restore/recovery protection.</div>
+      </section>
+
+      <section class="panel tab-panel" data-panel="answers">
+        <div class="panel-head"><div><h2>Candidate Memory & Answer Vault</h2><p>Approved facts used to answer screening questions safely. Applyra never invents missing candidate facts and never stores passwords, OTPs or CAPTCHA answers here.</p></div><button id="saveVaultBtn" class="button primary">Save Answer Vault</button></div>
+        <div class="form-grid">
+          <label>Current location<input id="vCurrentLocation" data-vault="currentLocation" placeholder="e.g. Bengaluru" /></label>
+          <label>Preferred location<input id="vPreferredLocation" data-vault="preferredLocation" placeholder="e.g. Remote / Hyderabad" /></label>
+          <label>Years of experience<input id="vYearsExperience" data-vault="yearsExperience" placeholder="e.g. 4.5" /></label>
+          <label>Notice period<input id="vNoticePeriod" data-vault="noticePeriod" placeholder="e.g. 30 days" /></label>
+          <label>Current CTC<input id="vCurrentCtc" data-vault="currentCtc" placeholder="optional" /></label>
+          <label>Expected CTC<input id="vExpectedCtc" data-vault="expectedCtc" placeholder="e.g. 35 LPA" /></label>
+          <label>Work authorization<input id="vWorkAuthorization" data-vault="workAuthorization" placeholder="e.g. Authorized in India" /></label>
+          <label>Remote preference<select id="vRemotePreference" data-vault="remotePreference"><option value="">Select</option><option>Remote</option><option>Hybrid</option><option>On-site</option><option>Flexible</option></select></label>
+          <label>Relocation<input id="vRelocation" data-vault="relocation" placeholder="Yes / No / Depends" /></label>
+          <label>Relocation / acceptable cities<input id="vRelocationCities" data-vault="relocationCities" placeholder="e.g. Bengaluru, Hyderabad, Pune" /></label>
+          <label>5-day WFO<select id="vFiveDayWfo" data-vault="fiveDayWfo"><option value="">Select</option><option>Yes</option><option>No</option><option>Depends</option></select></label>
+          <label>PF for all employments<select id="vPfAll" data-vault="pfAllEmployments"><option value="">Select</option><option>Yes</option><option>No</option><option>NA</option></select></label>
+          <label>Last working day<input id="vLastWorkingDay" data-vault="lastWorkingDay" placeholder="YYYY-MM-DD if known" /></label>
+          <label>Available from<input id="vAvailableFrom" data-vault="availableFrom" type="date" /></label>
+          <label class="wide">Last-working-day answer<textarea id="vLastWorkingDayAnswer" data-vault="lastWorkingDayAnswer" rows="2" placeholder="e.g. NA - 90 days notice period, negotiable"></textarea></label>
+          <label class="wide">Experience facts<textarea id="vExperienceFacts" data-vault="experienceFacts" rows="5" placeholder="One per line, for example:
+AI/ML Engineer = 3
+LangGraph = 3
+LLM = 3
+Time Series Forecasting = 2
+Classification = 3"></textarea></label>
+          <label class="wide">Former employers<textarea id="vFormerEmployers" data-vault="formerEmployers" rows="2" placeholder="Comma-separated employer names. Used as approved employment history."></textarea></label>
+          <label class="wide">Employer IDs (only when needed)<textarea id="vEmployerIds" data-vault="employerIds" rows="2" placeholder="One per line, e.g. Infosys = EMP12345"></textarea></label>
+          <label class="wide">Capability facts<textarea id="vCapabilityFacts" data-vault="capabilityFacts" rows="4" placeholder="One per line, e.g. Designed and deployed ML/DL models = Yes"></textarea></label>
+          <label>LinkedIn URL<input id="vLinkedin" data-vault="linkedinUrl" placeholder="https://linkedin.com/in/..." /></label>
+          <label>Portfolio URL<input id="vPortfolio" data-vault="portfolioUrl" placeholder="https://..." /></label>
+          <label>GitHub URL<input id="vGithub" data-vault="githubUrl" placeholder="https://github.com/..." /></label>
+          <label class="wide">Reason for change<textarea id="vReason" data-vault="reasonForChange" rows="3" placeholder="Your reusable concise answer"></textarea></label>
+        </div>
+        <div class="subhead"><div><h3>Custom screening answers</h3><p>Add employer-specific or uncommon questions. Exact approved answers override generic inference.</p></div><button id="addAnswerBtn" class="button secondary">Add answer</button></div>
+        <div id="customAnswers"></div>
+      </section>
+
+      <section class="panel tab-panel" data-panel="activity">
+        <div class="panel-head"><div><h2>Automation Activity</h2><p>A local operational log for Apply Engine, Profile Boost, watchdog and recovery events. It deliberately excludes passwords, OTPs, CAPTCHA answers and Resume Headline text.</p></div><button id="clearActivityBtn" class="button danger">Clear activity</button></div>
+        <div id="activityEmpty" class="empty">No automation activity yet.</div>
+        <div id="activityList" class="activity-list"></div>
+      </section>
+
+
+      <section class="panel tab-panel" data-panel="career">
+        <div class="panel-head"><div><h2>Career Suite</h2><p>Resume Studio, ATS Scanner, job matching, application tracker, interview preparation, recruiter outreach, career intelligence, priority alerts and grounded Career Copilot.</p></div><div class="hero-actions"><button id="openCareerSuiteBtn" class="button primary">Open Career Suite</button></div></div>
+        <div class="readiness-table">
+          <div><span>Resume variants + ATS scanner</span><strong class="ready">LOCAL ACTIVE</strong></div>
+          <div><span>Job matching + tracker analytics</span><strong class="ready">LOCAL ACTIVE</strong></div>
+          <div><span>Interview coach + outreach + career analytics</span><strong class="ready">LOCAL ACTIVE</strong></div>
+          <div><span>Priority alert rules + local Career Copilot</span><strong class="ready">LOCAL ACTIVE</strong></div>
+          <div><span>Automatic Gmail mailbox sync</span><strong class="pending">PROVIDER REQUIRED</strong></div>
+          <div><span>LLM-backed rewriting/generation</span><strong class="pending">PROVIDER REQUIRED</strong></div>
+        </div>
+        <div class="architecture-note"><strong>No fake AI:</strong> local deterministic intelligence is labeled local. Gmail/LLM capabilities remain provider-gated and are not presented as local functionality.</div>
+      </section>
+
+      <section class="panel tab-panel" data-panel="business">
+        <div class="panel-head">
+          <div><h2>Account & Data</h2><p>Account, migration, privacy, local beta entitlement and production-readiness controls. Backend-dependent states remain explicit until the real infrastructure is deployed and verified.</p></div>
+          <span class="business-mode">LOCAL BETA CONTROL PLANE</span>
+        </div>
+
+        <div class="business-kpis">
+          <article><span>Current plan</span><strong id="bizPlanName">Founding Beta</strong><small id="bizPlanPrice">Local beta access</small></article>
+          <article><span>Auto Apply this month</span><strong id="bizUsageText">0 / 300</strong><div class="usage-track"><i id="bizUsageBar"></i></div><small id="bizUsageCycle">Current cycle</small></article>
+          <article><span>Setup readiness</span><strong id="bizReadiness">0%</strong><small id="bizReadinessDetail">0 of 5 checks complete</small></article>
+          <article><span>Billing backend</span><strong>Not connected</strong><small>No fake payment status in this build</small></article>
+        </div>
+
+        <div class="business-grid">
+          <section class="business-card">
+            <div class="business-card-head"><div><h3>Applyra account</h3><p>Google, LinkedIn OIDC, or email/password authentication. OAuth secrets stay in the auth backend; portal passwords are never collected.</p></div><span id="bizAccountId" class="mono-pill">account</span></div>
+            <div class="plan-feature-list">
+              <div class="plan-feature"><span>Authentication</span><strong id="bizAuthState">Checking…</strong></div>
+              <div class="plan-feature"><span>Identity</span><strong id="bizAuthIdentity">—</strong></div>
+              <div class="plan-feature"><span>Session</span><strong id="bizAuthPersistence">—</strong></div>
+            </div>
+            <div class="business-actions"><button id="bizManageAuth" class="button primary">Manage login</button><button id="bizSignOut" class="button secondary">Sign out</button></div>
+          </section>
+
+          <section class="business-card">
+            <div class="business-card-head"><div><h3>Current entitlement</h3><p>This build exposes one real local entitlement: Founding Beta. Paid plans are not selectable until a server-verified billing backend exists.</p></div></div>
+            <div id="bizPlanFeatures" class="plan-feature-list"></div>
+            <div class="architecture-note"><strong>Billing boundary:</strong> no local control can unlock a paid plan, and no payment or subscription status is simulated.</div>
+          </section>
+        </div>
+
+        <div class="subhead"><div><h3>Production readiness</h3><p>What is genuinely implemented versus what still requires a hosted backend.</p></div></div>
+        <div class="readiness-table">
+          <div><span>Trusted-context Chrome storage isolation</span><strong class="ready">Implemented</strong></div>
+          <div><span>Strict runtime message sender authorization</span><strong class="ready">Implemented</strong></div>
+          <div><span>Sensitive Naukri URL sanitization</span><strong class="ready">Implemented</strong></div>
+          <div><span>Profile Boost recovery in extension-owned storage</span><strong class="ready">Implemented</strong></div>
+          <div><span>Optional external-provider/download permissions</span><strong class="ready">Implemented</strong></div>
+          <div><span>Operational log/run retention limits</span><strong class="ready">Implemented</strong></div>
+          <div><span>Confirmed Auto Apply usage ledger</span><strong class="ready">Implemented</strong></div>
+          <div><span>Unverified paid plans fail closed</span><strong class="ready">Implemented</strong></div>
+          <div><span>Private backup + PII-minimized support bundle</span><strong class="ready">Implemented</strong></div>
+          <div><span>Hosted auth client (Supabase)</span><strong class="ready">Implemented · setup required</strong></div>
+          <div><span>Google / LinkedIn OIDC / email auth flows</span><strong class="ready">Implemented · provider setup required</strong></div>
+          <div><span>Production RLS database schema</span><strong class="pending">Deploy SQL before cloud use</strong></div>
+          <div><span>Local → cloud migration transport</span><strong class="ready">Implemented · live backend verification pending</strong></div>
+          <div><span>Account deletion Edge Function</span><strong class="pending">Deploy function before use</strong></div>
+          <div><span>Payment provider + signed subscription webhooks</span><strong class="pending">Backend required</strong></div>
+          <div><span>Server-verified entitlements / anti-tamper</span><strong class="pending">Backend required</strong></div>
+        </div>
+
+        <div class="subhead"><div><h3>Production preflight</h3><p>Runs non-destructive live checks against the configured backend. It verifies authenticated schema/RLS availability and safely probes the account-deletion function. Live Naukri acceptance remains explicitly NOT RUN until tested on the real site.</p></div></div>
+        <div class="business-card">
+          <div class="business-card-head"><div><h3>Launch readiness</h3><p id="prodPreflightSummary">Preflight has not been run in this browser session.</p></div><span id="prodPreflightBadge" class="mono-pill">not run</span></div>
+          <div id="prodPreflightChecks" class="readiness-table"><div><span>No live production checks have been executed.</span><strong class="pending">NOT RUN</strong></div></div>
+          <div class="business-actions left"><button id="prodPreflightBtn" class="button primary">Run production preflight</button></div>
+          <div class="architecture-note"><strong>Truth boundary:</strong> this check cannot prove live Naukri application behavior. That requires the separate guided acceptance suite on a signed-in Naukri browser session.</div>
+        </div>
+
+        <div class="subhead"><div><h3>Cloud migration & data controls</h3><p>Local data stays authoritative until you explicitly copy it to your authenticated Supabase workspace. Applyra never uploads auth tokens, portal passwords, copied cookies, or provider secrets.</p></div></div>
+        <div class="business-grid">
+          <section class="business-card">
+            <div class="business-card-head"><div><h3>Production cloud workspace</h3><p id="cloudDetail">Checking migration state…</p></div><span id="cloudStatus" class="mono-pill">checking</span></div>
+            <div id="cloudPreviewDetail" class="architecture-note"><strong>No migration has been previewed yet.</strong></div>
+            <div class="business-actions left"><button id="cloudPreviewBtn" class="button secondary">Preview migration</button><button id="cloudPushBtn" class="button primary">Copy local data to cloud</button><button id="cloudVerifyBtn" class="button secondary">Verify cloud copy</button></div>
+          </section>
+          <section class="business-card">
+            <div class="business-card-head"><div><h3>Delete & privacy controls</h3><p>Destructive actions require explicit confirmation. Cloud deletion is scoped by RLS to the authenticated user.</p></div></div>
+            <div class="business-actions left"><button id="cloudDeleteBtn" class="button danger">Delete cloud data</button><button id="localClearBtn" class="button danger">Clear local career data</button><button id="accountDeleteBtn" class="button danger">Delete Applyra account</button></div>
+            <div class="architecture-note"><strong>Account deletion dependency:</strong> the deployable <code>delete-account</code> Supabase Edge Function must be installed. Until then this action fails closed.</div>
+          </section>
+        </div>
+
+        <div class="subhead"><div><h3>Beta onboarding</h3><p>These checks are derived from real Applyra settings, not a decorative checklist.</p></div></div>
+        <div id="bizOnboarding" class="onboarding-list"></div>
+
+        <div class="subhead"><div><h3>Recent billable usage</h3><p>Only newly confirmed successful Auto Apply jobs are recorded. Failed, pending, CAPTCHA and user-follow-up states consume zero local beta credits.</p></div></div>
+        <div id="bizUsageEmpty" class="empty">No confirmed Auto Apply usage has been recorded in this beta yet.</div>
+        <div id="bizUsageList" class="usage-list"></div>
+
+        <div class="subhead"><div><h3>Privacy & support</h3><p>Private backups may contain your career data and must not be sent to support. Support bundles exclude identity fields, credentials, raw application URLs, Answer Vault answers and provider secrets.</p></div></div>
+        <div class="business-actions left">
+          <button id="bizExportData" class="button secondary">Export private backup</button>
+          <button id="bizExportSupport" class="button secondary">Export sanitized support bundle</button>
+          <button id="bizClearDiagnostics" class="button secondary">Clear diagnostics</button>
+          <button id="bizReset" class="button danger">Reset account/data metadata</button>
+        </div>
+        <div class="danger-box"><strong>Transparent boundary:</strong> account authentication is now implemented through a hosted auth backend, but billing, subscription webhooks and server-side entitlement verification are still backend work. No paid-plan selector exists in this build; paid entitlements remain unavailable until server verification is implemented.</div>
+      </section>
+
+
+      <section class="panel tab-panel" data-panel="team">
+        <div class="panel-head"><div><h2>Team & Candidates</h2><p>B2B workspace foundation: organization, recruiter identity, multiple candidates and per-candidate memory.</p></div><button id="teamSave" class="button primary">Save workspace</button></div>
+        <div class="form-grid compact"><label>Organization<input id="teamOrg" /></label><label>Recruiter / operator<input id="teamRecruiter" /></label><label>Active candidate<select id="teamCandidate"></select></label></div>
+        <div class="actions"><button id="teamAdd" class="button">New candidate</button><button id="teamDuplicate" class="button">Duplicate</button><button id="teamArchive" class="button danger">Archive</button></div>
+        <div id="teamReadiness" class="architecture-note"></div>
+        <div class="form-grid compact"><label>Candidate name<input id="tcName" /></label><label>Email<input id="tcEmail" /></label><label>Phone<input id="tcPhone" /></label><label>Target roles<input id="tcRoles" /></label><label>Skills<input id="tcSkills" /></label><label>Years experience<input id="tcYears" /></label><label>Current location<input id="tcLocation" /></label><label>Preferred location<input id="tcPreferred" /></label></div>
+        <div class="architecture-note"><strong>Boundary:</strong> candidate profiles and resume metadata remain local unless you explicitly run Cloud Migration. Resume file bytes are not uploaded by this build.</div>
+      </section>
+      <section class="panel tab-panel" data-panel="portals">
+        <div class="panel-head"><div><h2>Multi-Portal</h2><p>User-assisted HTTPS job intake across supported provider URLs. Applyra detects the provider, saves the opportunity to the real Application Queue, and never claims autofill/submission where it is not implemented.</p></div></div>
+        <div class="form-grid compact"><label>HTTPS job URL<input id="liUrl" placeholder="https://www.linkedin.com/jobs/view/... or an ATS job URL" /></label><label>Job title<input id="liTitle" /></label><label>Company<input id="liCompany" /></label><label>Location<input id="liLocation" /></label><label class="wide">Visible job description<textarea id="liDescription" rows="5"></textarea></label></div>
+        <div class="actions"><button id="liSave" class="button primary">Save to Applyra</button><button id="liSimulate" class="button">🧮 Sim Comp</button></div>
+        <div id="portalStatus" class="architecture-note"><strong>Portal intake:</strong> Naukri native workflow; LinkedIn, Greenhouse, Lever, Ashby, Workday, iCIMS, SmartRecruiters, Rippling and generic HTTPS job pages are user-assisted queue intake only unless the capability registry says otherwise.</div>
+      </section>
+      <section class="panel tab-panel" data-panel="safety">
+        <div class="panel-head"><div><h2>Safety & Limits</h2><p>These limits are stored locally. CAPTCHA/OTP/security challenges always stay user-controlled.</p></div><button id="saveSafetyBtn" class="button primary">Save limits</button></div>
+        <div class="form-grid compact">
+          <label>Daily application cap<input id="sDailyCap" type="number" min="1" max="200" /></label>
+          <label>Maximum active sessions<input id="sParallel" type="number" min="1" max="3" /></label>
+          <label>Watchdog timeout (minutes)<input id="sWatchdog" type="number" min="5" max="120" /></label>
+          <label class="toggle"><input id="sFinalReview" type="checkbox" /><span>Require review before final submission for manual Apply Engine sessions (Naukri Auto Apply does not require Preview)</span></label>
+          <label class="toggle"><input id="sPauseSecurity" type="checkbox" disabled checked /><span>Always pause for OTP/CAPTCHA/security challenges</span></label>
+        </div>
+        <div class="danger-box"><strong>Not stored:</strong> portal passwords, OTPs, CAPTCHA answers or Naukri Resume Headline content. <strong>Not enabled:</strong> unattended ATS final submission or cloud session-cookie transfer.</div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" hidden></div>
+  </div>
+  <script src="apply-engine.js"></script>
+  <script src="theme-controls.js"></script>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - heading "LedgerPulse Treasury" [level=1] [ref=e3]
+    - button "Inspect Settlement" [ref=e4] [cursor=pointer]
+  - main [ref=e5]:
+    - region "Key Liquidity Metrics" [ref=e6]:
+      - article [ref=e7]:
+        - heading "Net Liquidity" [level=2] [ref=e8]
+        - paragraph [ref=e9]: \$4,820,410.00
+      - article [ref=e10]:
+        - heading "Pending Clears" [level=2] [ref=e11]
+        - paragraph [ref=e12]: 14 batches
+      - article [ref=e13]:
+        - heading "FX Exposure" [level=2] [ref=e14]
+        - paragraph [ref=e15]: 0.42% hedged

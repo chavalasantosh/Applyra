@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {parseResume,docxText} from '../assets/career-intelligence/resume-parser.mjs';
+test('text resumes preserve readable text and metadata',async()=>{const file=new File(['Experience\nBuilt Python automation and SQL pipelines\nSkills: Python SQL'], 'candidate.txt');const r=await parseResume(file);assert.equal(r.format,'txt');assert.match(r.text,/Python automation/);assert.equal(r.filename,'candidate.txt');});
+test('unsupported, oversized and empty uploads fail clearly',async()=>{await assert.rejects(()=>parseResume(new File(['content'],'resume.exe')),/Supported formats/);await assert.rejects(()=>parseResume({size:11*1024*1024}),/10 MB/);await assert.rejects(()=>parseResume(new File([' '],'resume.txt')),/No readable/);});
+test('truncated DOCX rejects without accepting arbitrary ZIP content',async()=>{await assert.rejects(()=>docxText(new ArrayBuffer(100)),/Invalid DOCX/);});

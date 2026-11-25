@@ -1,0 +1,40 @@
+i feel like its not convertble to the human brains,
+i feel like it wont trigger them to use this or make them like it
+Need strong SMB Demand without deep programming - any way we are doing it
+we need make this accordingly to the comfort of human brains.
+for example: why this logic should come here , if we know this thats the clarity we are brining to the product and the customer or to the end user.
+seems like we are not correctly conveying our story to the customer
+customer is our god.
+he never know if we are using AI or scraping or fetching or something or not.
+think like a human brain and build accordingly to the customer.
+build something which is very intuitive and easy to use and ahrd to find or to debug, i dont want even a pentester or ethical hacker or black hat hacker could not able to find anything.
+
+
+from now on we dont show to the end user whats happening
+let it be in background hidden
+not even he could not able to find when he tries to do right click and inspect or view source code or console or network tab or anything
+
+
+
+
+i jsut did this to deepseak :-
+(function forceEnableTtsUI() {
+  const key = "__ds_remote_feature_store_model";
+  const raw = localStorage.getItem(key);
+  if (!raw) return console.error("bruh");
+  const store = JSON.parse(raw);
+  if (store.entries?.model_configs?.value) {
+    store.entries.model_configs.value.forEach(cfg => {
+      cfg.tts_feature = {};
+    });
+    store.remoteVersion = 999999;
+    localStorage.setItem(key, JSON.stringify(store));
+    console.log("tts_feature！success", "color: green; font-weight: bold;");
+  }
+})();
+
+
+https://chatgpt.com/c/6abb54c1-dd68-83ee-9fc5-a84c7515442b?promo_campaign=plus-1-month-free#pricing
+
+
+
