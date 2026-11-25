@@ -4,6 +4,11 @@
   var root = document.documentElement;
   var THEME_KEY = 'applyra-theme';
   var ACCENT_KEY = 'applyra-accent';
+  var APPEARANCE_KEY = 'applyra-appearance';
+  var DARK_APPEARANCE_KEY = 'applyra-dark-appearance';
+  var MOTION_KEY = 'applyra-motion-mode';
+  var VALID_APPEARANCES = ['obsidian', 'ivory', 'spatial', 'cyber', 'graphite', 'aurora'];
+  var VALID_MOTIONS = ['reduced', 'standard', 'enhanced', 'cinematic'];
 
   function systemTheme(){
     try {
@@ -80,11 +85,48 @@
     });
   }
 
-  function apply(theme, accent){
+  function getSavedAppearance(theme){
+    try {
+      var ap = localStorage.getItem(APPEARANCE_KEY);
+      if (VALID_APPEARANCES.indexOf(ap) !== -1) return ap;
+    } catch(e) {}
+    return theme === 'light' ? 'ivory' : 'obsidian';
+  }
+
+  function getSavedMotion(){
+    try {
+      var m = localStorage.getItem(MOTION_KEY);
+      if (VALID_MOTIONS.indexOf(m) !== -1) return m;
+    } catch(e) {}
+    try {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'reduced';
+    } catch(e) {}
+    return 'enhanced';
+  }
+
+  function apply(theme, accent, explicitAppearance){
     var resolved = theme === 'dark' ? 'dark' : 'light';
+    var appearance = explicitAppearance || getSavedAppearance(resolved);
+    if (resolved === 'light') appearance = 'ivory';
+    else if (appearance === 'ivory') {
+      try {
+        var prevDark = localStorage.getItem(DARK_APPEARANCE_KEY);
+        appearance = (VALID_APPEARANCES.indexOf(prevDark) !== -1 && prevDark !== 'ivory') ? prevDark : 'obsidian';
+      } catch(e) {
+        appearance = 'obsidian';
+      }
+    }
     root.setAttribute('data-theme', resolved);
+    root.setAttribute('data-appearance', appearance);
+    root.setAttribute('data-motion', getSavedMotion());
     root.style.colorScheme = resolved;
     root.setAttribute('data-accent', accent || 'aqua');
+    try {
+      localStorage.setItem(APPEARANCE_KEY, appearance);
+      if (resolved === 'dark' && appearance !== 'ivory') {
+        localStorage.setItem(DARK_APPEARANCE_KEY, appearance);
+      }
+    } catch(e) {}
     updateToggleButtons(resolved);
   }
 
@@ -95,10 +137,15 @@
   // Sync from chrome.storage.local if available
   try {
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.get(['applyraTheme'], function(res){
+      chrome.storage.local.get(['applyraTheme', 'applyraAppearance', 'applyraMotionMode'], function(res){
+        if (res && VALID_MOTIONS.indexOf(res.applyraMotionMode) !== -1) {
+          try { localStorage.setItem(MOTION_KEY, res.applyraMotionMode); } catch(e) {}
+          root.setAttribute('data-motion', res.applyraMotionMode);
+        }
         if (res && (res.applyraTheme === 'dark' || res.applyraTheme === 'light')) {
           try { localStorage.setItem(THEME_KEY, res.applyraTheme); } catch(e) {}
-          apply(res.applyraTheme, root.getAttribute('data-accent') || 'aqua');
+          var ap = VALID_APPEARANCES.indexOf(res.applyraAppearance) !== -1 ? res.applyraAppearance : null;
+          apply(res.applyraTheme, root.getAttribute('data-accent') || 'aqua', ap);
         }
       });
     }

@@ -1,5 +1,15 @@
 export type ApplyraTheme = 'dark' | 'light';
 
+export type ApplyraAppearance =
+  | 'obsidian'
+  | 'ivory'
+  | 'spatial'
+  | 'cyber'
+  | 'graphite'
+  | 'aurora';
+
+export type ApplyraMotionMode = 'reduced' | 'standard' | 'enhanced' | 'cinematic';
+
 export interface CandidateProfile {
   name?: string;
   headline?: string;
@@ -47,4 +57,22 @@ export interface NormalizedJob {
   status: string;
   appliedAt: string | null;
   candidateId: string;
+  skills?: string[];
+  fitScore?: number;
+}
+
+export interface ScheduledScan {
+  id: string;
+  name?: string;
+  query?: string;
+  enabled?: boolean;
+  lastRunAt?: string;
+}
+
+export interface VisualStorageSnapshot {
+  jobs: NormalizedJob[];
+  candidateEvidence: CandidateEvidence | null;
+  candidateProfile: CandidateProfile | null;
+  scheduledScans: ScheduledScan[];
+  companyIntel: unknown[];
 }

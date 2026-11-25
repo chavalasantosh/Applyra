@@ -63,6 +63,108 @@
   --ap-shadow-popover: 0 24px 56px -12px rgba(2, 6, 23, 0.72), 0 0 0 1px rgba(148, 163, 184, 0.18);
 }
 
+/* Applyra Visual Engine — 6 Appearance Personalities */
+[data-appearance="obsidian"] {
+  --ap-canvas: #090d16;
+  --ap-surface: #0f1624;
+  --ap-surface-elevated: #162033;
+  --ap-subtle: #111a2b;
+  --ap-accent: #3b82f6;
+  --ap-accent-hover: #2563eb;
+  --ap-accent-soft: rgba(59, 130, 246, 0.16);
+}
+
+[data-appearance="ivory"] {
+  --ap-canvas: #f7f8fb;
+  --ap-surface: #ffffff;
+  --ap-surface-elevated: #f1f5f9;
+  --ap-subtle: #eef2f7;
+  --ap-accent: #2563eb;
+  --ap-accent-hover: #1d4ed8;
+  --ap-accent-soft: rgba(37, 99, 235, 0.12);
+}
+
+[data-appearance="spatial"] {
+  --ap-canvas: #0b1222;
+  --ap-surface: rgba(19, 32, 56, 0.78);
+  --ap-surface-elevated: rgba(27, 45, 78, 0.86);
+  --ap-subtle: rgba(15, 25, 45, 0.72);
+  --ap-border: rgba(148, 197, 255, 0.22);
+  --ap-border-strong: rgba(148, 197, 255, 0.36);
+  --ap-accent: #38bdf8;
+  --ap-accent-hover: #0ea5e9;
+  --ap-accent-soft: rgba(56, 189, 248, 0.18);
+}
+
+[data-appearance="cyber"] {
+  --ap-canvas: #060913;
+  --ap-surface: #0b1120;
+  --ap-surface-elevated: #111a31;
+  --ap-subtle: #090f1d;
+  --ap-border: rgba(6, 182, 212, 0.22);
+  --ap-border-strong: rgba(139, 92, 246, 0.36);
+  --ap-accent: #06b6d4;
+  --ap-accent-hover: #0891b2;
+  --ap-accent-soft: rgba(6, 182, 212, 0.18);
+}
+
+[data-appearance="graphite"] {
+  --ap-canvas: #111317;
+  --ap-surface: #181b21;
+  --ap-surface-elevated: #20252d;
+  --ap-subtle: #15181e;
+  --ap-border: rgba(203, 213, 225, 0.14);
+  --ap-border-strong: rgba(203, 213, 225, 0.26);
+  --ap-accent: #60a5fa;
+  --ap-accent-hover: #3b82f6;
+  --ap-accent-soft: rgba(96, 165, 250, 0.16);
+}
+
+[data-appearance="aurora"] {
+  --ap-canvas: #080e1a;
+  --ap-surface: #0f1b2e;
+  --ap-surface-elevated: #15253e;
+  --ap-subtle: #0c1626;
+  --ap-border: rgba(52, 211, 153, 0.18);
+  --ap-border-strong: rgba(56, 189, 248, 0.3);
+  --ap-accent: #10b981;
+  --ap-accent-hover: #059669;
+  --ap-accent-soft: rgba(16, 185, 129, 0.18);
+}
+
+/* Motion Preference Tokens */
+:root {
+  --ap-motion-fast: 160ms;
+  --ap-motion-base: 240ms;
+}
+
+[data-motion="reduced"] {
+  --ap-motion-fast: 0ms;
+  --ap-motion-base: 0ms;
+}
+
+[data-motion="standard"] {
+  --ap-motion-fast: 140ms;
+  --ap-motion-base: 200ms;
+}
+
+[data-motion="enhanced"] {
+  --ap-motion-fast: 180ms;
+  --ap-motion-base: 280ms;
+}
+
+[data-motion="cinematic"] {
+  --ap-motion-fast: 240ms;
+  --ap-motion-base: 380ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ap-motion-fast: 0ms;
+    --ap-motion-base: 0ms;
+  }
+}
+
 .metric-value,
 .score-badge,
 .job-table td,
