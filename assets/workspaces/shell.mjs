@@ -20,6 +20,11 @@ const ROUTE_META = {
 };
 
 export function currentRouteName() {
+  const activeNav = document.querySelector('.sidebar .nav-item.active');
+  if (activeNav) {
+    const txt = (activeNav.textContent || '').trim();
+    if (ROUTE_META[txt]) return txt;
+  }
   const raw = decodeURIComponent((location.hash || '#Overview').replace(/^#/, '')).trim();
   return raw || 'Overview';
 }
@@ -72,6 +77,10 @@ export function initShellEnhancements(onRouteChange) {
   }
 
   window.addEventListener('hashchange', handleRoute);
+  window.addEventListener('popstate', () => setTimeout(handleRoute, 40));
+  document.addEventListener('click', (ev) => {
+    if (ev.target?.closest?.('.sidebar .nav-item')) setTimeout(handleRoute, 40);
+  }, { capture: true, passive: true });
   document.addEventListener('keydown', onKeyDown);
 
   const obs = new MutationObserver(() => {

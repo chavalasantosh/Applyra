@@ -3,11 +3,19 @@ function safeArr(v) {
   return Array.isArray(v) ? v : [];
 }
 
-async function readOverviewSnapshot() {
+function readOverviewSnapshot() {
   if (typeof chrome === 'undefined' || !chrome?.storage?.local) {
-    return { jobs: [], universalJobs: {}, careerEvidence: {}, scheduledScans: [], runs: [] };
+    return Promise.resolve({ jobs: [], universalJobs: {}, careerEvidence: {}, scheduledScans: [], runs: [] });
   }
-  return await chrome.storage.local.get(['jobs', 'universalJobs', 'careerEvidence', 'scheduledScans', 'runs', 'teamWorkspace']);
+  return new Promise((resolve) => {
+    try {
+      chrome.storage.local.get(['jobs', 'universalJobs', 'careerEvidence', 'scheduledScans', 'runs', 'teamWorkspace'], (res) => {
+        resolve(res || {});
+      });
+    } catch {
+      resolve({});
+    }
+  });
 }
 
 function goPage(file) {
@@ -39,7 +47,7 @@ export async function renderOverviewCommandCenter(isOverviewActive) {
   }
   const all = [...dedup.values()];
   const total = all.length;
-  const strong = all.filter((j) => Number(j?.fitScore ?? j?.score ?? 0) >= 70).length;
+  const strong = all.filter((j) => Number(j?.fitScore ?? j?.score ?? j?.matchScore ?? j?.profileFit ?? 0) >= 70).length;
   const applied = all.filter((j) => /^applied$/i.test(String(j?.status || j?.applicationStatus || ''))).length;
   const interview = all.filter((j) => /interview/i.test(String(j?.status || j?.applicationStatus || ''))).length;
   const offer = all.filter((j) => /offer/i.test(String(j?.status || j?.applicationStatus || ''))).length;

@@ -19,20 +19,29 @@ initShellEnhancements(refreshRoute);
 
 const obs = new MutationObserver(() => {
   const route = currentRouteName();
-  if (route === 'Overview' && !document.getElementById('apCommandCenter')) {
-    if (document.getElementById('applyra-overview-health') || document.querySelector('.metric-strip')) {
+  if (route === 'Overview') {
+    if (document.getElementById('apOppToolbar')) syncOpportunityWorkspace('Overview');
+    if (!document.getElementById('apCommandCenter') && (document.getElementById('applyra-overview-health') || document.querySelector('.metric-strip'))) {
       refreshRoute('Overview');
     }
   } else if (['Extractor', 'Saved', 'Scheduled scans', 'Applications'].includes(route) && !document.getElementById('apOppToolbar')) {
     if (document.querySelector('.table-wrap, .applyra-integrated, .extractor-console')) {
       syncOpportunityWorkspace(route);
     }
+  } else if (document.getElementById('apOppToolbar')) {
+    syncOpportunityWorkspace(route);
   }
 });
 if (document.body) obs.observe(document.body, { childList: true, subtree: true });
 
 if (typeof chrome !== 'undefined' && chrome?.storage?.onChanged) {
   chrome.storage.onChanged.addListener(() => {
-    if (currentRouteName() === 'Overview') refreshRoute('Overview');
+    refreshRoute(currentRouteName());
   });
 }
+window.addEventListener('applyra:evidence-updated', () => refreshRoute(currentRouteName()));
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) refreshRoute(currentRouteName());
+});
+setTimeout(() => refreshRoute(currentRouteName()), 600);
+setTimeout(() => refreshRoute(currentRouteName()), 1800);
