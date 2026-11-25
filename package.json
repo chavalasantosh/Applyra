@@ -1,0 +1,13 @@
+{
+  "name": "applyra",
+  "version": "3.0.0-alpha.1",
+  "private": true,
+  "description": "Applyra 3.0 Career Intelligence & Job Application Platform (Chrome Manifest V3)",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.*",
+    "build:bundles": "node scripts/build-secure-artifacts.mjs",
+    "package:ext": "node scripts/package-extension.mjs",
+    "check": "node --check assets/dashboard-runtime.js && node --check assets/career-intelligence/ui.mjs && node --check theme-controls.js"
+  }
+}
