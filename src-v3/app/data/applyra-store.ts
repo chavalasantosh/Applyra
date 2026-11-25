@@ -12,11 +12,39 @@ import type {
 } from '../../../web-src/types.ts';
 import { extractCandidateSkills } from '../../../web-src/data/storage-bridge.ts';
 
+export interface AnswerVaultData {
+  currentLocation?: string;
+  preferredLocation?: string;
+  yearsExperience?: string;
+  noticePeriod?: string;
+  currentCtc?: string;
+  expectedCtc?: string;
+  workAuthorization?: string;
+  remotePreference?: string;
+  relocation?: string;
+  acceptableCities?: string;
+  formerEmployers?: string;
+  linkedinUrl?: string;
+  githubUrl?: string;
+  portfolioUrl?: string;
+  reasonForChange?: string;
+}
+
+export interface CompanyIntelRecord {
+  company: string;
+  rolesCount: number;
+  locations: string[];
+  salarySamples: string[];
+  sources: string[];
+}
+
 export interface ApplyraStoreState {
   jobs: NormalizedJob[];
   candidateEvidence: CandidateEvidence | null;
   candidateProfile: CandidateProfile | null;
   scheduledScans: ScheduledScan[];
+  answerVault: AnswerVaultData;
+  companyIntelRaw: unknown[];
   candidateSkills: string[];
   userName: string;
   userEmail: string;
@@ -30,6 +58,8 @@ export async function fetchApplyraStore(): Promise<ApplyraStoreState> {
       candidateEvidence: null,
       candidateProfile: null,
       scheduledScans: [],
+      answerVault: {},
+      companyIntelRaw: [],
       candidateSkills: [],
       userName: 'Candidate',
       userEmail: 'Extension storage preview',
@@ -42,6 +72,8 @@ export async function fetchApplyraStore(): Promise<ApplyraStoreState> {
     'candidateEvidence',
     'candidateProfile',
     'scheduledScans',
+    'answerVault',
+    'companyIntel',
     'applyraUser',
     'user'
   ]);
@@ -50,6 +82,8 @@ export async function fetchApplyraStore(): Promise<ApplyraStoreState> {
   const candidateEvidence = (raw.candidateEvidence as CandidateEvidence) || null;
   const candidateProfile = (raw.candidateProfile as CandidateProfile) || null;
   const scheduledScans = Array.isArray(raw.scheduledScans) ? (raw.scheduledScans as ScheduledScan[]) : [];
+  const answerVault = (raw.answerVault as AnswerVaultData) || {};
+  const companyIntelRaw = Array.isArray(raw.companyIntel) ? raw.companyIntel : [];
   const userObj = (raw.applyraUser || raw.user || {}) as Record<string, unknown>;
 
   return {
@@ -57,6 +91,8 @@ export async function fetchApplyraStore(): Promise<ApplyraStoreState> {
     candidateEvidence,
     candidateProfile,
     scheduledScans,
+    answerVault,
+    companyIntelRaw,
     candidateSkills: extractCandidateSkills(candidateEvidence, candidateProfile),
     userName: String(candidateProfile?.name || userObj.name || userObj.fullName || 'Candidate'),
     userEmail: String(userObj.email || 'Connected to Chrome Storage'),
@@ -90,6 +126,11 @@ export async function saveCandidateEvidence(evidence: CandidateEvidence): Promis
 export async function saveScheduledScans(scans: ScheduledScan[]): Promise<void> {
   if (!hasExtensionStorage()) return;
   await storageSet({ scheduledScans: scans });
+}
+
+export async function saveAnswerVault(vault: AnswerVaultData): Promise<void> {
+  if (!hasExtensionStorage()) return;
+  await storageSet({ answerVault: vault });
 }
 
 export async function triggerRuntimeAction(type: string, payload: Record<string, unknown> = {}): Promise<unknown> {

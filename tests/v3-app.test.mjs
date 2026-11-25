@@ -19,3 +19,15 @@ test('index.html loads reconstructed Applyra 3.0 app bundle without CDN links', 
   const js = fs.readFileSync(jsPath, 'utf8');
   assert.doesNotMatch(js, /https:\/\/(cdn\.|unpkg\.com|cdn\.jsdelivr\.net)/i);
 });
+
+test('Applyra 3.0 OperationsView enforces zero-inference Answer Vault review', () => {
+  const opsSrc = fs.readFileSync(path.join(ROOT, 'src-v3', 'app', 'views', 'OperationsView.tsx'), 'utf8');
+  assert.match(opsSrc, /handleGenerateSafeSuggestions/);
+  assert.match(opsSrc, /approveSuggestion/);
+  assert.match(opsSrc, /Pending Safe Suggestions/);
+
+  const appSrc = fs.readFileSync(path.join(ROOT, 'src-v3', 'app', 'App.tsx'), 'utf8');
+  for (const id of ['overview', 'opportunities', 'operations', 'resume', 'company-intel', 'scans', 'settings']) {
+    assert.match(appSrc, new RegExp(`id:\\s*'${id}'`), `Missing workspace route: ${id}`);
+  }
+});

@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   Play,
   Radar,
+  Settings,
   Sparkles,
   UserCheck,
   Zap
@@ -26,14 +27,20 @@ import {
 import { CommandPalette, type RouteId } from './components/CommandPalette.tsx';
 import { OverviewView } from './views/OverviewView.tsx';
 import { OpportunitiesView } from './views/OpportunitiesView.tsx';
+import { OperationsView } from './views/OperationsView.tsx';
 import { ResumeStudioView } from './views/ResumeStudioView.tsx';
+import { CompanyIntelView } from './views/CompanyIntelView.tsx';
 import { ScansView } from './views/ScansView.tsx';
+import { SettingsView } from './views/SettingsView.tsx';
 
 const WORKSPACES: Array<{ id: RouteId; label: string; icon: React.ComponentType<{ size?: number }> }> = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
   { id: 'opportunities', label: 'Opportunities', icon: Briefcase },
+  { id: 'operations', label: 'Operations & Vault', icon: Zap },
   { id: 'resume', label: 'Resume Studio', icon: FileText },
-  { id: 'scans', label: 'Scheduled Scans', icon: Radar }
+  { id: 'company-intel', label: 'Company Intel', icon: Building2 },
+  { id: 'scans', label: 'Scheduled Scans', icon: Radar },
+  { id: 'settings', label: 'Settings & Backup', icon: Settings }
 ];
 
 const SUITE_LINKS = [
@@ -55,6 +62,8 @@ export const ApplyraV3App: React.FC = () => {
     candidateEvidence: null,
     candidateProfile: null,
     scheduledScans: [],
+    answerVault: {},
+    companyIntelRaw: [],
     candidateSkills: [],
     userName: 'Candidate',
     userEmail: 'Loading…',
@@ -232,8 +241,19 @@ export const ApplyraV3App: React.FC = () => {
             {route === 'opportunities' && (
               <OpportunitiesView store={store} onStatusChange={handleStatusChange} />
             )}
+            {route === 'operations' && (
+              <OperationsView
+                store={store}
+                onStatusChange={handleStatusChange}
+                onRefresh={refreshStore}
+              />
+            )}
             {route === 'resume' && <ResumeStudioView store={store} onRefresh={refreshStore} />}
+            {route === 'company-intel' && <CompanyIntelView store={store} />}
             {route === 'scans' && <ScansView store={store} onRefresh={refreshStore} />}
+            {route === 'settings' && (
+              <SettingsView store={store} appearance={appearance} motionMode={motionMode} />
+            )}
           </main>
         </div>
 

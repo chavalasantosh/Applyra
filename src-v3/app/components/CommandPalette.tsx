@@ -5,7 +5,14 @@ import { Command, Search, Sparkles, X } from 'lucide-react';
 import type { ApplyraAppearance } from '../../../web-src/types.ts';
 import { APPEARANCE_PRESETS, applyAppearanceToDom } from '../../../web-src/appearance/presets.ts';
 
-export type RouteId = 'overview' | 'opportunities' | 'resume' | 'scans';
+export type RouteId =
+  | 'overview'
+  | 'opportunities'
+  | 'operations'
+  | 'resume'
+  | 'company-intel'
+  | 'scans'
+  | 'settings';
 
 interface CommandPaletteProps {
   open: boolean;
@@ -38,8 +45,11 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   const actions = [
     { id: 'nav-overview', group: 'Workspaces', label: 'Go to Overview Command Center', run: () => onNavigate('overview') },
     { id: 'nav-opps', group: 'Workspaces', label: 'Go to Opportunities & Fit Table', run: () => onNavigate('opportunities') },
+    { id: 'nav-ops', group: 'Workspaces', label: 'Go to Operations & Answer Vault', run: () => onNavigate('operations') },
     { id: 'nav-resume', group: 'Workspaces', label: 'Go to Resume & Career Intelligence', run: () => onNavigate('resume') },
+    { id: 'nav-comp', group: 'Workspaces', label: 'Go to Company & Comp Intel', run: () => onNavigate('company-intel') },
     { id: 'nav-scans', group: 'Workspaces', label: 'Go to Scheduled Scans', run: () => onNavigate('scans') },
+    { id: 'nav-settings', group: 'Workspaces', label: 'Go to Diagnostics & Backup', run: () => onNavigate('settings') },
     { id: 'act-scan', group: 'Actions', label: 'Run Job Scan Now', run: onTriggerScan },
     { id: 'ext-apply', group: 'Extension Modules', label: 'Open Operations & Answer Vault (apply-engine.html)', run: () => { window.location.href = 'apply-engine.html'; } },
     { id: 'ext-comp', group: 'Extension Modules', label: 'Open Company & Comp Intel (company-intel.html)', run: () => { window.location.href = 'company-intel.html'; } },

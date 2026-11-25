@@ -800,6 +800,144 @@ body,
   z-index: 2000;
 }
 
+/* Vault, Review Tray, Company Intel & Diagnostics */
+.ap-v3-vault-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.ap-v3-vault-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--ap-text-dim);
+}
+
+.ap-v3-review-tray {
+  padding: 14px;
+  border-radius: var(--ap-r-md);
+  border: 1px solid var(--ap-accent);
+  background: var(--ap-accent-soft);
+  margin-bottom: 16px;
+}
+
+.ap-v3-review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.ap-v3-review-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: var(--ap-r-sm);
+  background: var(--ap-surface);
+  border: 1px solid var(--ap-border);
+  margin-top: 6px;
+  font-size: 12.5px;
+}
+
+.ap-v3-review-src {
+  display: block;
+  font-size: 11px;
+  color: var(--ap-text-dim);
+}
+
+.ap-v3-vault-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ap-v3-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ap-v3-field span {
+  font-size: 11.5px;
+  color: var(--ap-text-dim);
+  font-weight: 500;
+}
+
+.ap-v3-field input {
+  height: 34px;
+  padding: 0 10px;
+  border-radius: var(--ap-r-sm);
+  border: 1px solid var(--ap-border);
+  background: var(--ap-subtle);
+  color: var(--ap-text);
+  font-size: 12.5px;
+}
+
+.ap-v3-company-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.ap-v3-company-card {
+  padding: 14px;
+  border-radius: var(--ap-r-md);
+  border: 1px solid var(--ap-border);
+  background: var(--ap-subtle);
+}
+
+.ap-v3-company-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ap-v3-company-head strong {
+  flex: 1;
+  font-size: 13px;
+}
+
+.ap-v3-company-meta span {
+  display: block;
+  font-size: 11.5px;
+  color: var(--ap-text-dim);
+  margin-top: 3px;
+}
+
+.ap-v3-diag-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ap-v3-diag-card {
+  padding: 14px;
+  border-radius: var(--ap-r-md);
+  border: 1px solid var(--ap-border);
+  background: var(--ap-subtle);
+}
+
+.ap-v3-diag-card span {
+  display: block;
+  font-size: 11.5px;
+  color: var(--ap-text-dim);
+  margin-bottom: 4px;
+}
+
+.ap-v3-diag-card strong {
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
 @media (max-width: 960px) {
   .ap-v3-shell {
     grid-template-columns: 1fr;
