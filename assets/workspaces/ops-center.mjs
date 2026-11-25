@@ -1,4 +1,6 @@
-/* Applyra 3.0 — Milestone M7 Application Operations Center Strip & Evidence-Backed Vault Auto-Fill */
+/* Applyra 3.0 — Milestone M7 Application Operations Center Strip & Explicit Vault Review */
+import { deriveVaultSuggestions } from './vault-suggestions.mjs';
+
 function syncOpsStrip() {
   const main = document.querySelector('.page-shell main');
   if (!main) return;
@@ -54,133 +56,109 @@ function readStorage(keys) {
   });
 }
 
-function extractUrls(text) {
-  const m = String(text || '').match(/https?:\/\/[^\s<>"')]+/gi) || [];
-  return [...new Set(m.map((u) => u.replace(/[.,;]+$/, '')))];
+function applySuggestionToField(key, value) {
+  const el = document.querySelector(`[data-vault="${key}"]`);
+  if (!el) return false;
+  el.value = value;
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+  el.dispatchEvent(new Event('change', { bubbles: true }));
+  return true;
 }
 
-function deriveVaultSuggestions(store) {
-  const tw = store.teamWorkspace || {};
-  const activeCand = (tw.candidates || []).find((c) => c.id === tw.activeCandidateId) || null;
-  const profile = activeCand?.profile || store.profile || {};
-  const candId = activeCand?.id || 'local-profile';
-  const ev = store.careerEvidence?.[candId] || store.careerEvidence?.['local-profile'] || {};
-  const np = profile.naukriProfile || {};
-  const idInfo = np.identity || {};
-  const cp = np.careerProfile || {};
-
-  const resumeText = ev.resume?.text || '';
-  const naukriText = ev.naukri?.text || '';
-  const linkedinText = ev.linkedin?.text || '';
-  const allText = [resumeText, naukriText, linkedinText].filter(Boolean).join('\n');
-
-  const onlineLinks = [
-    ...(np.accomplishments?.onlineProfiles || []).map((x) => x.link),
-    ...(np.accomplishments?.workSamples || []).map((x) => x.link),
-    ...extractUrls(allText)
-  ].filter((u) => /^https?:\/\//i.test(String(u || '')));
-
-  const linkedinUrl = onlineLinks.find((u) => /linkedin\.com\/in\//i.test(u)) || '';
-  const githubUrl = onlineLinks.find((u) => /github\.com\//i.test(u)) || '';
-  const portfolioUrl = onlineLinks.find((u) => !/linkedin\.com|github\.com|naukri\.com/i.test(u)) || '';
-
-  const currentLoc = idInfo.currentLocation || profile.currentLocation || '';
-  const prefLocList = [
-    ...(Array.isArray(ev.preferredLocations) ? ev.preferredLocations : []),
-    ...(Array.isArray(cp.preferredWorkLocations) ? cp.preferredWorkLocations : []),
-    ...(Array.isArray(profile.locations) ? profile.locations : [])
-  ].map((s) => String(s || '').trim()).filter(Boolean);
-  const uniqLocs = [...new Set(prefLocList)];
-  const prefLoc = uniqLocs[0] || currentLoc;
-
-  const yrs = ev.confirmedYears ?? (idInfo.experienceYears || profile.fullTimeYears || profile.yearsExperience || '');
-  const yrsStr = yrs !== '' && yrs !== null && yrs !== undefined ? String(yrs) : '';
-
-  const noticeDays = Number(idInfo.noticePeriodDays ?? profile.noticePeriodDays);
-  const noticePeriod = idInfo.noticePeriod || (Number.isFinite(noticeDays) ? (noticeDays === 0 ? 'Immediate' : `${noticeDays} days`) : '');
-
-  const currentCtc = idInfo.currentSalaryText || (profile.currentSalary ? `${profile.currentSalary} LPA` : '');
-  const expectedCtc = cp.preferredAnnualSalaryText || (profile.salaryMax ? `${profile.salaryMax} LPA` : profile.salaryMin ? `${profile.salaryMin} LPA` : '');
-
-  const isIndia = /\bindia\b|bengaluru|bangalore|hyderabad|pune|chennai|mumbai|delhi|noida|gurugram|gurgaon/i.test(currentLoc + ' ' + uniqLocs.join(' '));
-  const hasRemote = uniqLocs.some((l) => /remote/i.test(l));
-  const remotePref = hasRemote && uniqLocs.length > 1 ? 'Flexible' : hasRemote ? 'Remote' : '';
-
-  const employers = [...new Set([
-    ...(Array.isArray(profile.workHistory) ? profile.workHistory.map((w) => w?.company) : []),
-    ...(Array.isArray(np.employment) ? np.employment.map((w) => w?.company) : [])
-  ].map((c) => String(c || '').trim()).filter(Boolean))];
-
-  const skillPairs = [];
-  const seenSkill = new Set();
-  for (const it of np.itSkills || []) {
-    const name = String(it?.skillText || '').trim();
-    const y = it?.experienceYears || yrsStr || '';
-    if (name && y && !seenSkill.has(name.toLowerCase())) {
-      seenSkill.add(name.toLowerCase());
-      skillPairs.push(`${name} = ${y}`);
-    }
-  }
-  const fallbackSkills = [...(np.keySkills || []), ...(Array.isArray(profile.skills) ? profile.skills : [])];
-  for (const sk of fallbackSkills) {
-    const name = String(sk || '').trim();
-    if (name && yrsStr && !seenSkill.has(name.toLowerCase())) {
-      seenSkill.add(name.toLowerCase());
-      skillPairs.push(`${name} = ${yrsStr}`);
-    }
-    if (skillPairs.length >= 12) break;
-  }
-
-  const capFacts = [];
-  const top3 = [...seenSkill].slice(0, 3);
-  if (top3.length) capFacts.push(`Hands-on experience with ${top3.join(', ')} = Yes`);
-  if (employers.length) capFacts.push(`Worked at ${employers[0]} = Yes`);
-
-  const todayIso = new Date().toISOString().slice(0, 10);
-  const isImmediate = /immediate/i.test(noticePeriod) || noticeDays === 0;
-
-  return {
-    currentLocation: currentLoc,
-    preferredLocation: prefLoc,
-    yearsExperience: yrsStr,
-    noticePeriod,
-    currentCtc,
-    expectedCtc,
-    workAuthorization: isIndia ? 'Authorized in India' : '',
-    remotePreference: remotePref,
-    relocation: uniqLocs.length > 1 ? 'Yes' : '',
-    relocationCities: uniqLocs.join(', '),
-    availableFrom: isImmediate ? todayIso : '',
-    lastWorkingDayAnswer: isImmediate ? 'NA - Immediate joiner' : (noticePeriod ? `NA - ${noticePeriod} notice period` : ''),
-    experienceFacts: skillPairs.join('\n'),
-    formerEmployers: employers.join(', '),
-    capabilityFacts: capFacts.join('\n'),
-    linkedinUrl,
-    portfolioUrl,
-    githubUrl
-  };
-}
-
-async function autoFillVault({ notify = true } = {}) {
+async function openVaultReview() {
+  const panel = document.querySelector('[data-panel="answers"]');
+  if (!panel) return;
   const store = await readStorage(['profile', 'careerEvidence', 'teamWorkspace']);
   const suggestions = deriveVaultSuggestions(store);
-  let filled = 0;
-  document.querySelectorAll('[data-vault]').forEach((el) => {
-    const key = el.dataset.vault;
-    const val = suggestions[key];
-    if (!String(el.value || '').trim() && val) {
-      el.value = val;
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-      el.dispatchEvent(new Event('change', { bubbles: true }));
-      filled += 1;
-    }
+
+  const pending = suggestions.filter((s) => {
+    const el = document.querySelector(`[data-vault="${s.key}"]`);
+    return el && !String(el.value || '').trim();
   });
-  if (notify) {
-    showToastMessage(
-      filled
-        ? `Auto-filled ${filled} empty field(s) from your stored profile & resume. Review and click Save Answer Vault.`
-        : 'All derivable fields from your stored profile & resume are already filled.'
-    );
+
+  let tray = document.getElementById('apVaultReviewTray');
+  if (!tray) {
+    tray = document.createElement('div');
+    tray.id = 'apVaultReviewTray';
+    tray.className = 'ap-cc-card';
+    tray.style.marginBottom = '14px';
+    const grid = panel.querySelector('.form-grid');
+    if (grid) panel.insertBefore(tray, grid);
+  }
+
+  tray.replaceChildren();
+  const head = document.createElement('div');
+  head.className = 'ap-cc-head';
+  const title = document.createElement('h3');
+  title.textContent = pending.length
+    ? `Review ${pending.length} evidence-backed suggestion(s)`
+    : 'No new empty fields to suggest from stored evidence';
+  const actions = document.createElement('div');
+  actions.style.display = 'flex';
+  actions.style.gap = '8px';
+
+  if (pending.length) {
+    const approveAll = document.createElement('button');
+    approveAll.type = 'button';
+    approveAll.className = 'button primary';
+    approveAll.textContent = 'Approve all';
+    approveAll.addEventListener('click', () => {
+      let count = 0;
+      for (const s of pending) {
+        if (applySuggestionToField(s.key, s.value)) count += 1;
+      }
+      tray.remove();
+      showToastMessage(`Applied ${count} approved suggestion(s). Click Save Answer Vault to persist.`);
+    });
+    actions.appendChild(approveAll);
+  }
+
+  const dismiss = document.createElement('button');
+  dismiss.type = 'button';
+  dismiss.className = 'button secondary';
+  dismiss.textContent = 'Dismiss';
+  dismiss.addEventListener('click', () => tray.remove());
+  actions.appendChild(dismiss);
+  head.append(title, actions);
+  tray.appendChild(head);
+
+  if (pending.length) {
+    const list = document.createElement('div');
+    list.className = 'ap-funnel-list';
+    for (const s of pending) {
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.alignItems = 'center';
+      row.style.justifyContent = 'space-between';
+      row.style.gap = '10px';
+      row.style.padding = '8px 10px';
+      row.style.borderRadius = 'var(--ap-r-sm)';
+      row.style.background = 'var(--ap-subtle)';
+
+      const info = document.createElement('div');
+      const strong = document.createElement('strong');
+      strong.style.display = 'block';
+      strong.style.fontSize = '12.5px';
+      strong.textContent = `${s.label}: ${s.value.length > 80 ? s.value.slice(0, 80) + '…' : s.value}`;
+      const meta = document.createElement('span');
+      meta.className = 'ap-cc-meta';
+      meta.textContent = `Source: ${s.source}`;
+      info.append(strong, meta);
+
+      const applyBtn = document.createElement('button');
+      applyBtn.type = 'button';
+      applyBtn.className = 'button secondary';
+      applyBtn.textContent = 'Approve';
+      applyBtn.addEventListener('click', () => {
+        applySuggestionToField(s.key, s.value);
+        row.remove();
+        showToastMessage(`Approved ${s.label}. Click Save Answer Vault to persist.`);
+      });
+
+      row.append(info, applyBtn);
+      list.appendChild(row);
+    }
+    tray.appendChild(list);
   }
 }
 
@@ -189,9 +167,8 @@ function initOpsCenter() {
   const btn = document.getElementById('autoFillVaultBtn');
   if (btn && !btn.dataset.apWired) {
     btn.dataset.apWired = '1';
-    btn.addEventListener('click', () => autoFillVault({ notify: true }));
+    btn.addEventListener('click', () => { openVaultReview(); });
   }
-  setTimeout(() => autoFillVault({ notify: false }), 450);
 }
 
 if (document.readyState === 'loading') {

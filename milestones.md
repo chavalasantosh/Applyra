@@ -7,11 +7,11 @@
 | **M2** | Frontend Architecture Modernization | **Complete (Foundation)** | `package.json` (`npm test`, `build:bundles`, `check`) and typed MV3 compatibility adapters (`web-src/types.ts`, `web-src/chrome-adapter.ts`) created. |
 | **M3** | Applyra Design System | **Complete** | Unified `tokens.css` (light/dark) + `tabular-nums` + `theme.css` integration across all 15 HTML pages. |
 | **M4** | Application Shell | **Complete** | `src/applyra-shell.js` (`Ctrl/Cmd+K` command palette, topbar search trigger), topbar Day/Night toggle, and sticky bottom-left profile widget. |
-| **M5** | Advanced Dashboard (`#Overview`) | **Complete** | `assets/workspaces/overview-center.mjs`: live Pipeline Funnel & Workspace Readiness & Quick Actions driven by `chrome.storage.local`. |
-| **M6** | Job Discovery & Opportunity Scans | **Complete** | `assets/workspaces/opportunity-enhancer.mjs`: Comfortable/Compact density switcher & keyboard shortcuts on `#Extractor`, `#Saved`, `#Scheduled scans`, `#Applications`. |
-| **M7** | Application Engine & Tracking | **Complete** | `apply-engine.html` + `assets/workspaces/ops-center.mjs`: live 5-stat Operations Summary Strip synced with queue/session/vault metrics. |
-| **M8** | Resume & Career Intelligence | **Complete** | `assets/career-intelligence/*` bug fixes + split-panel two-column workbench (`workspaces.css`) with local PDF/DOCX/TXT parsing. |
-| **M9** | Company & Market Intelligence | **Complete** | `company-intel.html` + `assets/workspaces/company-enhancer.mjs`: evidence provenance & active currency transparency strip. |
+| **M5** | Advanced Dashboard (`#Overview`) | **Partial (Alpha 1)** | `assets/workspaces/overview-center.mjs`: live Pipeline Funnel & Quick Actions added; full React/TSX chart rewrite pending M2 Vite pipeline. |
+| **M6** | Job Discovery & Opportunity Scans | **Partial (Alpha 1)** | `assets/workspaces/opportunity-enhancer.mjs`: density switcher & shortcuts added; full virtualized table & detail side panel pending M2 Vite pipeline. |
+| **M7** | Application Engine & Tracking | **Partial (Alpha 1)** | `apply-engine.html` + `ops-center.mjs` + `vault-suggestions.mjs`: live 5-stat strip & explicit-approval provenance review; full operations redesign pending. |
+| **M8** | Resume & Career Intelligence | **Partial (Alpha 1)** | `assets/career-intelligence/*` live analysis & parser fixes + split workbench; full interactive studio pending. |
+| **M9** | Company & Market Intelligence | **Partial (Alpha 1)** | `company-intel.html` + `company-enhancer.mjs`: provenance strip added; full visualizations & comparison tables pending. |
 | **M10** | Auth, Onboarding & Profiles | Pending | `auth.html`, `onboarding.html`, `#Profile`, `naukri-profile.html`, `career-suite.html` aligned to unified shell & tokens. |
 | **M11** | Billing, Settings & Admin | Pending | `billing.html`, `#Settings`, `admin.html`, `test-lab.html`, `#Account history`, `#Exports` with clear unfinished-payment guards. |
 | **M12** | Browser Popup & Notifications | Pending | `popup.html` & `download-toast` aligned to Applyra 3.0 design tokens and compact action ergonomics. |

@@ -7,6 +7,6 @@
     "test": "node --test tests/*.test.*",
     "build:bundles": "node scripts/build-secure-artifacts.mjs",
     "package:ext": "node scripts/package-extension.mjs",
-    "check": "node --check assets/dashboard-runtime.js && node --check assets/career-intelligence/ui.mjs && node --check theme-controls.js"
+    "check": "node --check assets/dashboard-runtime.js && node --check assets/career-intelligence/ui.mjs && node --check assets/career-intelligence/core.js && node --check assets/career-intelligence/resume-parser.mjs && node --check assets/workspaces/shell.mjs && node --check assets/workspaces/overview-center.mjs && node --check assets/workspaces/opportunity-enhancer.mjs && node --check assets/workspaces/ops-center.mjs && node --check assets/workspaces/vault-suggestions.mjs && node --check assets/workspaces/company-enhancer.mjs && node --check assets/workspaces/workspaces-boot.mjs && node --check theme-controls.js && node --check content.js"
   }
 }
